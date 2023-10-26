@@ -1,6 +1,7 @@
 package com.example.myapp.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +21,7 @@ import com.example.myapp.R;
 import com.example.myapp.adapter.CollectionAdapter;
 import com.example.myapp.adapter.HomeAdapter;
 import com.example.myapp.api.Retrofit;
+import com.example.myapp.auth.AuthActivity;
 import com.example.myapp.databinding.FragmentHomeBinding;
 import com.example.myapp.model.Collection;
 import com.example.myapp.model.Movie;
@@ -54,8 +56,6 @@ public class HomeFragment extends Fragment {
         CollectionAdapter collectionAdapter = new CollectionAdapter(getContext(),data);
         binding.rcvCollection.setAdapter(collectionAdapter);
 
-
-
         return root;
     }
 
@@ -86,8 +86,8 @@ public class HomeFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.user) {
-            Context context = getContext().getApplicationContext();
-            Toast.makeText(context, "User", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext().getApplicationContext(), AuthActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
