@@ -7,16 +7,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.myapp.R;
+import com.example.myapp.api.ApiService;
 import com.example.myapp.api.Retrofit;
-import com.example.myapp.model.Collection;
-import com.example.myapp.model.Movie;
-
-import java.util.ArrayList;
 
 public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.ViewHolder>{
     private Context context;
@@ -35,6 +30,8 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
         return new ViewHolder(view);
     }
 
+//    public void
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         String collect = collection[position];
@@ -42,32 +39,17 @@ public class CollectionAdapter extends RecyclerView.Adapter<CollectionAdapter.Vi
             return;
         }
         holder.tvCollectionName.setText(collect);
-        Retrofit.retrofit.getPopularMovie(
-                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8",
-                "vi-Vn",
-                1
-        ).enqueue(new retrofit2.Callback<Collection>() {
-            @Override
-            public void onResponse(retrofit2.Call<Collection> call, retrofit2.Response<Collection> response) {
-                Collection collection = response.body();
-
-                LinearLayoutManager layoutManager = new LinearLayoutManager(context,RecyclerView.HORIZONTAL,false);
-                holder.recycleviewMovie.setLayoutManager(layoutManager);
-
-                if (collection != null) {
-                    HomeAdapter homeAdapter = new HomeAdapter(context,collection.getResults());
-                    holder.recycleviewMovie.setAdapter(homeAdapter);
-                }
-                else {
-                    HomeAdapter homeAdapter = new HomeAdapter(context,new ArrayList<>());
-                    holder.recycleviewMovie.setAdapter(homeAdapter);
-                }
-            }
-            @Override
-            public void onFailure(retrofit2.Call<Collection> call, Throwable t) {
-
-            }
-        });
+        if (collect == "Các bộ phim") {
+            Retrofit.retrofit.getPopularMovie("vi-Vn", 1).enqueue(ApiService.PopularMovieCallback(holder,context));
+        } else if (collect == "Các chương trình truyền hình") {
+            Retrofit.retrofit.getPopularTvSeries("vi-Vn", 1).enqueue(ApiService.PopularTvSeriesCallback(holder,context));
+        } else if (collect == "Chương trình phồ biến gần đây") {
+            Retrofit.retrofit.getTrendingTvSeries("day", "en").enqueue(ApiService.PopularTvSeriesCallback(holder,context));
+        } else if (collect == "Bộ phim phổ biến gần đây") {
+            Retrofit.retrofit.getTrendingMovies("day","en").enqueue(ApiService.PopularMovieCallback(holder,context));
+        } else if (collect == "Bộ phim sắp ra mắt") {
+            Retrofit.retrofit.getUpcomingMovies("en",1).enqueue(ApiService.PopularMovieCallback(holder,context));
+        }
 
     }
 

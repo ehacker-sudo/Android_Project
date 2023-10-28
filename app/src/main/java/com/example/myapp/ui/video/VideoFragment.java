@@ -9,13 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.myapp.api.Retrofit;
 import com.example.myapp.databinding.FragmentVideoBinding;
-import com.example.myapp.model.Collection;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -30,6 +24,7 @@ public class VideoFragment extends Fragment {
 
         binding = FragmentVideoBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
         return root;
     }
 

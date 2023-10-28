@@ -1,14 +1,14 @@
-package com.example.myapp.model;
+package com.example.myapp.model.resource;
 
 import java.util.List;
 
-public class Collection {
+public class FilmResource<T> {
     private int page;
-    private List<Movie> results;
+    private List<T> results;
     private int total_pages;
     private int total_results;
 
-    public Collection(int page, List<Movie> results, int total_pages, int total_results) {
+    public FilmResource(int page, List<T> results, int total_pages, int total_results) {
         this.page = page;
         this.results = results;
         this.total_pages = total_pages;
@@ -23,11 +23,11 @@ public class Collection {
         this.page = page;
     }
 
-    public List<Movie> getResults() {
+    public List<T> getResults() {
         return results;
     }
 
-    public void setResults(List<Movie> results) {
+    public void setResults(List<T> results) {
         this.results = results;
     }
 

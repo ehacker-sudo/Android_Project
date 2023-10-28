@@ -1,34 +1,19 @@
-package com.example.myapp.model;
+package com.example.myapp.model.film;
 
-public class Movie {
-    private boolean adult;
+public class TvSerie {
     private String backdrop_path;
+    private String first_air_date;
     private int[] genre_ids;
     private int id;
+    private String name;
+    private String[] origin_country;
     private String original_language;
-    private String original_title;
+    private String original_name;
     private String overview;
     private Double popularity;
     private String poster_path;
-    private String release_date;
-    private String title;
-    private boolean video;
     private double vote_average;
     private long vote_count;
-
-    public Movie(String poster_path, String title, double vote_average) {
-        this.poster_path = poster_path;
-        this.title = title;
-        this.vote_average = vote_average;
-    }
-
-    public boolean isAdult() {
-        return adult;
-    }
-
-    public void setAdult(boolean adult) {
-        this.adult = adult;
-    }
 
     public String getBackdrop_path() {
         return backdrop_path;
@@ -36,6 +21,14 @@ public class Movie {
 
     public void setBackdrop_path(String backdrop_path) {
         this.backdrop_path = backdrop_path;
+    }
+
+    public String getFirst_air_date() {
+        return first_air_date;
+    }
+
+    public void setFirst_air_date(String first_air_date) {
+        this.first_air_date = first_air_date;
     }
 
     public int[] getGenre_ids() {
@@ -54,6 +47,22 @@ public class Movie {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String[] getOrigin_country() {
+        return origin_country;
+    }
+
+    public void setOrigin_country(String[] origin_country) {
+        this.origin_country = origin_country;
+    }
+
     public String getOriginal_language() {
         return original_language;
     }
@@ -62,12 +71,12 @@ public class Movie {
         this.original_language = original_language;
     }
 
-    public String getOriginal_title() {
-        return original_title;
+    public String getOriginal_name() {
+        return original_name;
     }
 
-    public void setOriginal_title(String original_title) {
-        this.original_title = original_title;
+    public void setOriginal_name(String original_name) {
+        this.original_name = original_name;
     }
 
     public String getOverview() {
@@ -92,30 +101,6 @@ public class Movie {
 
     public void setPoster_path(String poster_path) {
         this.poster_path = poster_path;
-    }
-
-    public String getRelease_date() {
-        return release_date;
-    }
-
-    public void setRelease_date(String release_date) {
-        this.release_date = release_date;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public boolean isVideo() {
-        return video;
-    }
-
-    public void setVideo(boolean video) {
-        this.video = video;
     }
 
     public double getVote_average() {

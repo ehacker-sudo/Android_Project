@@ -7,14 +7,15 @@
     android:orientation="vertical"
     android:background="@drawable/auth_bg"
     tools:context=".auth.AuthActivity">
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="88dp"
         android:gravity="top"
         android:paddingTop="20dp"
-        app:titleTextColor="@color/white"
         android:theme="@style/Theme.Second_MyApp"
         app:title="Đăng nhập"
-        app:titleMarginTop="15dp" />
+        app:titleMarginTop="15dp"
+        app:titleTextColor="@color/white" />
 </LinearLayout>

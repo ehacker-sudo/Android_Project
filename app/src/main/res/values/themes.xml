@@ -15,4 +15,20 @@
     <style name="Theme.Second_MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="homeAsUpIndicator">@drawable/baseline_arrow_back_ios_new_24</item>
     </style>
+    <style name="Theme.third_MyApp" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/white</item>
+        <item name="homeAsUpIndicator">@drawable/arrow_back</item>
+    </style>
+    <style name="Theme.Button" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/white</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorOnSecondary</item>
+    </style>
 </resources>

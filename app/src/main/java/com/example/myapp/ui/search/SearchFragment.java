@@ -6,21 +6,22 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.myapp.R;
-import com.example.myapp.adapter.CollectionAdapter;
-import com.example.myapp.adapter.CustomAdapter;
+import com.example.myapp.adapter.SearchAdapter;
+import com.example.myapp.api.Retrofit;
 import com.example.myapp.databinding.FragmentSearchBinding;
-import com.example.myapp.model.CustomModel;
+import com.example.myapp.model.film.Movie;
+import com.example.myapp.model.resource.FilmResource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +32,7 @@ import java.util.List;
  * create an instance of this fragment.
  */
 public class SearchFragment extends Fragment {
-
     private FragmentSearchBinding binding;
-    private CustomAdapter customAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -43,13 +42,6 @@ public class SearchFragment extends Fragment {
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         binding.recycleview.setLayoutManager(layoutManager);
-
-        List<CustomModel> customModelList = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            customModelList.add(new CustomModel("Text "+ i ));
-        }
-        customAdapter = new CustomAdapter(customModelList);
-        binding.recycleview.setAdapter(customAdapter);
 
         return root;
     }
@@ -75,15 +67,32 @@ public class SearchFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Toast.makeText(getContext(), "Submit: " + query, Toast.LENGTH_SHORT).show();
-                customAdapter.getFilter().filter(query);
+                Retrofit.retrofit.getMovieSearch(query,"vi-Vn", 1).enqueue(new retrofit2.Callback<FilmResource<Movie>>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<FilmResource<Movie>> call, retrofit2.Response<FilmResource<Movie>> response) {
+                        FilmResource<Movie> filmResource = response.body();
+                        List<Movie> movieList = new ArrayList<>();
+
+                        for (int i = 0; i < filmResource.getResults().size(); i++) {
+                            movieList.add(filmResource.getResults().get(i));
+                        }
+
+                        RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
+                        binding.recycleview.addItemDecoration(dividerItemDecoration);
+
+                        SearchAdapter searchAdapter = new SearchAdapter(getContext(),movieList);
+                        binding.recycleview.setAdapter(searchAdapter);
+                    }
+                    @Override
+                    public void onFailure(retrofit2.Call<FilmResource<Movie>> call, Throwable t) {
+
+                    }
+                });
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Toast.makeText(getContext(),"Change: " + newText, Toast.LENGTH_SHORT).show();
-                customAdapter.getFilter().filter(newText);
                 return false;
             }
         });

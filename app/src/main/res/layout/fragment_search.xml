@@ -6,9 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="50dp"
     tools:context=".ui.search.SearchFragment"
-    android:orientation="vertical"
-    android:background="#e5e5e5"
-    >
+    android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleview"

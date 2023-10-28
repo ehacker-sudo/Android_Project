@@ -1,39 +1,44 @@
 package com.example.myapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.example.myapp.MovieActivity;
 import com.example.myapp.R;
-import com.example.myapp.model.Movie;
+import com.example.myapp.model.film.TvSerie;
 
 import java.util.List;
-import com.bumptech.glide.Glide;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
+public class TvSerieAdapter extends RecyclerView.Adapter<TvSerieAdapter.ViewHolder> {
     private Context context;
-    private List<Movie> movieList;
+    private List<TvSerie> tvSerieList;
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView movieName;
         public ImageView movieImage;
         public TextView movieRate;
+        public CardView card_movie;
 
         public ViewHolder(View view) {
             super(view);
             movieName = view.findViewById(R.id.movie_name);
             movieImage = view.findViewById(R.id.movie_image);
             movieRate = view.findViewById(R.id.movie_rate);
+            card_movie = view.findViewById(R.id.card_movie);
         }
     }
 
-    public HomeAdapter(Context context, List<Movie> movieList) {
+    public TvSerieAdapter(Context context, List<TvSerie> tvSerieList) {
         this.context = context;
-        this.movieList = movieList;
+        this.tvSerieList = tvSerieList;
     }
 
     @Override
@@ -45,17 +50,29 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        Movie movie = movieList.get(position);
-        if (movie == null) {
+        TvSerie tvSerie = tvSerieList.get(position);
+        if (tvSerie == null) {
             return;
         }
-        viewHolder.movieName.setText(movie.getTitle());
-        Glide.with(context).load("https://image.tmdb.org/t/p/w500" +movie.getPoster_path()).into(viewHolder.movieImage);
-        viewHolder.movieRate.setText(Double.toString(movie.getVote_average()));
+        viewHolder.movieName.setText(tvSerie.getName());
+        Glide.with(context).load("https://image.tmdb.org/t/p/w500" + tvSerie.getPoster_path()).into(viewHolder.movieImage);
+        viewHolder.movieRate.setText(Double.toString(tvSerie.getVote_average()));
+        viewHolder.card_movie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MoveToDetail(tvSerie);
+            }
+        });
+    }
+
+    private void MoveToDetail(TvSerie tvSerie) {
+        Intent intent = new Intent(context, MovieActivity.class);
+        context.startActivity(intent);
     }
 
     @Override
     public int getItemCount() {
-        return movieList.size();
+        return tvSerieList.size();
     }
 }
+
