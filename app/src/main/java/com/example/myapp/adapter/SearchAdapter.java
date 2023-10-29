@@ -70,6 +70,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     private void MoveToDetail(Movie movie) {
         Intent intent = new Intent(context, MovieActivity.class);
+        intent.putExtra("id",movie.getId());
+        intent.putExtra("media_type","movie");
         context.startActivity(intent);
     }
 

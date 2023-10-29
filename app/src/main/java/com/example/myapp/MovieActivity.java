@@ -2,16 +2,33 @@ package com.example.myapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.example.myapp.adapter.AlbumAdapter;
+import com.example.myapp.adapter.CastAdapter;
+import com.example.myapp.adapter.CrewAdapter;
+import com.example.myapp.adapter.GenresAdapter;
+import com.example.myapp.adapter.TvSerieAdapter;
+import com.example.myapp.api.ApiService;
 import com.example.myapp.api.Retrofit;
 import com.example.myapp.databinding.ActivityMovieBinding;
+import com.example.myapp.model.film.Movie;
+import com.example.myapp.model.film.MovieInfo;
+import com.example.myapp.model.film.TvSerie;
+import com.example.myapp.model.film.TvSerieInfo;
+import com.example.myapp.model.resource.CreditsResource;
+import com.example.myapp.model.resource.FilmResource;
 import com.example.myapp.model.resource.ImageType;
 
 import java.util.ArrayList;
@@ -34,50 +51,41 @@ public class MovieActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        if (getIntent().getStringExtra("media_type").equals("tv")) {
+            Retrofit.retrofit.getTvSerieDetails(getIntent().getIntExtra("id",37854),"en")
+                    .enqueue(ApiService.TvDetailsCallBack(getApplicationContext(),binding));
 
-        Retrofit.retrofit.getTVSeriesImages(37854,"").enqueue(new Callback<ImageType>() {
-            @Override
-            public void onResponse(Call<ImageType> call, Response<ImageType> response) {
-                ImageType imageType = response.body();
+            Retrofit.retrofit.getTVSeriesImages(getIntent().getIntExtra("id",37854),"")
+                    .enqueue(ApiService.SliderCallBack(binding));
 
-                List<SlideModel> imageList = new ArrayList(); // Create image list
+            Retrofit.retrofit.getTvSerieCredits(getIntent().getIntExtra("id",37854),"en")
+                    .enqueue(ApiService.TvCreditCallBack(getApplicationContext(),binding));
 
+            Retrofit.retrofit.getTVSeriesImages(getIntent().getIntExtra("id",37854),"")
+                    .enqueue(ApiService.TvImageCallBack(getApplicationContext(),binding));
 
-                if (imageType.getBackdrops().size() < 3) {
-                    imageList.add(new SlideModel("https://bit.ly/2YoJ77H", "The animal population decreased by 58 percent in 42 years.",ScaleTypes.CENTER_CROP));
-                    imageList.add(new SlideModel("https://bit.ly/2BteuF2", "Elephants and tigers may become extinct.",ScaleTypes.CENTER_CROP));
-                    imageList.add(new SlideModel("https://bit.ly/3fLJf72", "And people do that.",ScaleTypes.CENTER_CROP));
-                }
-                else {
-                    imageList.add(new SlideModel("https://image.tmdb.org/t/p/w500" + imageType.getBackdrops().get(0).getFile_path(), "",ScaleTypes.CENTER_CROP));
-                    imageList.add(new SlideModel("https://image.tmdb.org/t/p/w500" + imageType.getBackdrops().get(1).getFile_path(), "",ScaleTypes.CENTER_CROP));
-                    imageList.add(new SlideModel("https://image.tmdb.org/t/p/w500" + imageType.getBackdrops().get(2).getFile_path(), "",ScaleTypes.CENTER_CROP));
-                }
+            Retrofit.retrofit.getTvSerieRecommendations(getIntent().getIntExtra("id",37854),"en",1)
+                    .enqueue(ApiService.TvRecommendCallBack(getApplicationContext(),binding));
+        } else if (getIntent().getStringExtra("media_type").equals("movie")) {
+            Retrofit.retrofit.getMovieDetails(getIntent().getIntExtra("id",37854),"en")
+                    .enqueue(ApiService.MovieDetailCallBack(getApplicationContext(),binding));
 
-                ImageSlider imageSlider = findViewById(R.id.image_slider);
-                imageSlider.setImageList(imageList);
-            }
+            Retrofit.retrofit.getMovieImages(getIntent().getIntExtra("id",37854),"")
+                    .enqueue(ApiService.SliderCallBack(binding));
 
-            @Override
-            public void onFailure(Call<ImageType> call, Throwable t) {
+            Retrofit.retrofit.getMovieCredits(getIntent().getIntExtra("id",37854),"en")
+                    .enqueue(ApiService.TvCreditCallBack(getApplicationContext(),binding));
 
-            }
-        });
+            Retrofit.retrofit.getMovieImages(getIntent().getIntExtra("id",37854),"")
+                    .enqueue(ApiService.TvImageCallBack(getApplicationContext(),binding));
 
-        binding.navView.setOnItemReselectedListener(item -> {
-            if (item.getItemId() == R.id.navigation_home) {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-            } else if (item.getItemId() == R.id.navigation_search) {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-            } else if (item.getItemId() == R.id.navigation_video) {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
+            Retrofit.retrofit.getMovieRecommendations(getIntent().getIntExtra("id",37854),"",1)
+                    .enqueue(ApiService.MovieRecommendCallback(getApplicationContext(),binding));
+        }
 
     }
+
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

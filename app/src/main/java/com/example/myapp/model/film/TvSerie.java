@@ -14,6 +14,15 @@ public class TvSerie {
     private String poster_path;
     private double vote_average;
     private long vote_count;
+    private String media_type;
+
+    public String getMedia_type() {
+        return media_type;
+    }
+
+    public void setMedia_type(String media_type) {
+        this.media_type = media_type;
+    }
 
     public String getBackdrop_path() {
         return backdrop_path;

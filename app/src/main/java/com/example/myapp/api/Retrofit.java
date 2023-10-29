@@ -1,7 +1,10 @@
 package com.example.myapp.api;
 
 import com.example.myapp.model.film.Movie;
+import com.example.myapp.model.film.MovieInfo;
 import com.example.myapp.model.film.TvSerie;
+import com.example.myapp.model.film.TvSerieInfo;
+import com.example.myapp.model.resource.CreditsResource;
 import com.example.myapp.model.resource.FilmResource;
 import com.example.myapp.model.resource.ImageType;
 import com.google.gson.Gson;
@@ -93,6 +96,83 @@ public interface Retrofit {
     })
     @GET("3/movie/upcoming")
     Call<FilmResource<Movie>> getUpcomingMovies(
+            @Query("language") String language,
+            @Query("page") int page
+    );
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/tv/{series_id}")
+    Call<TvSerieInfo> getTvSerieDetails(
+            @Path("series_id") int series_id,
+            @Query("language") String language
+    );
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/movie/{movie_id}")
+    Call<MovieInfo> getMovieDetails(
+            @Path("movie_id") int movie_id,
+            @Query("language") String language
+    );
+
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/movie/{movie_id}/images")
+    Call<ImageType> getMovieImages(
+            @Path("movie_id") int movie_id,
+            @Query("language") String language
+    );
+
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/tv/{series_id}/credits")
+    Call<CreditsResource> getTvSerieCredits(
+            @Path("series_id") int series_id,
+            @Query("language") String language
+    );
+
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/movie/{movie_id}/credits")
+    Call<CreditsResource> getMovieCredits(
+            @Path("movie_id") int movie_id,
+            @Query("language") String language
+    );
+
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/tv/{series_id}/recommendations")
+    Call<FilmResource<TvSerie>> getTvSerieRecommendations(
+            @Path("series_id") int series_id,
+            @Query("language") String language,
+            @Query("page") int page
+    );
+
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/movie/{movie_id}/recommendations")
+    Call<FilmResource<Movie>> getMovieRecommendations(
+            @Path("movie_id") int movie_id,
             @Query("language") String language,
             @Query("page") int page
     );

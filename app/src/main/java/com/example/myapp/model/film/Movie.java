@@ -16,11 +16,20 @@ public class Movie {
     private double vote_average;
     private long vote_count;
     private String origin_country;
+    private String media_type;
 
     public Movie(String poster_path, String title, double vote_average) {
         this.poster_path = poster_path;
         this.title = title;
         this.vote_average = vote_average;
+    }
+
+    public String getMedia_type() {
+        return media_type;
+    }
+
+    public void setMedia_type(String media_type) {
+        this.media_type = media_type;
     }
 
     public boolean isAdult() {

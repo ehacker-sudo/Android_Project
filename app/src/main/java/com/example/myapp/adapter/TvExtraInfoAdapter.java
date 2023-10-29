@@ -2,7 +2,6 @@ package com.example.myapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,7 @@ import com.example.myapp.model.film.TvSerie;
 
 import java.util.List;
 
-public class TvSerieAdapter extends RecyclerView.Adapter<TvSerieAdapter.ViewHolder> {
+public class TvExtraInfoAdapter extends RecyclerView.Adapter<TvExtraInfoAdapter.ViewHolder> {
     private Context context;
     private List<TvSerie> tvSerieList;
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -38,7 +37,7 @@ public class TvSerieAdapter extends RecyclerView.Adapter<TvSerieAdapter.ViewHold
         }
     }
 
-    public TvSerieAdapter(Context context, List<TvSerie> tvSerieList) {
+    public TvExtraInfoAdapter(Context context, List<TvSerie> tvSerieList) {
         this.context = context;
         this.tvSerieList = tvSerieList;
     }
