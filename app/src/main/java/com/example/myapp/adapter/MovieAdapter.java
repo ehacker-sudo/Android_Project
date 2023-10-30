@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.myapp.MovieActivity;
 import com.example.myapp.R;
+import com.example.myapp.film_interface.FilmClickListener;
 import com.example.myapp.model.film.Movie;
 
 import java.util.List;
@@ -22,10 +24,15 @@ import java.util.List;
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
     private Context context;
     private List<Movie> movieList;
+    private FilmClickListener filmClickListener;
 
     public MovieAdapter(Context context, List<Movie> movieList) {
         this.context = context;
         this.movieList = movieList;
+    }
+
+    public void setFilmClickListener(FilmClickListener filmClickListener) {
+        this.filmClickListener = filmClickListener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -62,16 +69,13 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         viewHolder.card_movie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MoveToDetail(movie);
+                filmClickListener.onClickItemMovie(movie);
             }
         });
     }
 
-    private void MoveToDetail(Movie movie) {
-        Intent intent = new Intent(context, MovieActivity.class);
-        intent.putExtra("id",movie.getId());
-        intent.putExtra("media_type","movie");
-        context.startActivity(intent);
+    public void release(){
+        context = null;
     }
 
     @Override

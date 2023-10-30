@@ -1,6 +1,8 @@
 package com.example.myapp.api;
 
 import android.content.Context;
+import android.content.Intent;
+import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
+import com.example.myapp.MovieActivity;
 import com.example.myapp.R;
 import com.example.myapp.adapter.AlbumAdapter;
 import com.example.myapp.adapter.CastAdapter;
@@ -18,6 +21,7 @@ import com.example.myapp.adapter.GenresAdapter;
 import com.example.myapp.adapter.MovieAdapter;
 import com.example.myapp.adapter.TvSerieAdapter;
 import com.example.myapp.databinding.ActivityMovieBinding;
+import com.example.myapp.film_interface.FilmClickListener;
 import com.example.myapp.model.film.Movie;
 import com.example.myapp.model.film.MovieInfo;
 import com.example.myapp.model.film.TvSerie;
@@ -45,6 +49,20 @@ public class ApiService {
 
                 if (movieFilmResource != null) {
                     MovieAdapter movieAdapter = new MovieAdapter(context, movieFilmResource.getResults());
+                    movieAdapter.setFilmClickListener(new FilmClickListener() {
+                        @Override
+                        public void onClickItemMovie(Movie movie) {
+                            Intent intent = new Intent(context, MovieActivity.class);
+                            intent.putExtra("id",movie.getId());
+                            intent.putExtra("media_type","movie");
+                            context.startActivity(intent);
+                        }
+
+                        @Override
+                        public void onClickItemTvSerie(TvSerie tvSerie) {
+
+                        }
+                    });
                     holder.recycleviewMovie.setAdapter(movieAdapter);
                 } else {
                     MovieAdapter movieAdapter = new MovieAdapter(context, new ArrayList<>());
@@ -70,6 +88,19 @@ public class ApiService {
 
                 if (tvSerieFilmResource != null) {
                     TvSerieAdapter tvSerieAdapter = new TvSerieAdapter(context,tvSerieFilmResource.getResults());
+                    tvSerieAdapter.setFilmClickListener(new FilmClickListener() {
+                        @Override
+                        public void onClickItemMovie(Movie movie) {
+                        }
+
+                        @Override
+                        public void onClickItemTvSerie(TvSerie tvSerie) {
+                            Intent intent = new Intent(context, MovieActivity.class);
+                            intent.putExtra("id",tvSerie.getId());
+                            intent.putExtra("media_type","tv");
+                            context.startActivity(intent);
+                        }
+                    });
                     holder.recycleviewMovie.setAdapter(tvSerieAdapter);
                 }
                 else {
@@ -206,7 +237,6 @@ public class ApiService {
             @Override
             public void onResponse(Call<CreditsResource> call, Response<CreditsResource> response) {
                 CreditsResource creditsResource = response.body();
-//                    Toast.makeText(getApplicationContext(), creditsResource.getCast().get(0).getName(), Toast.LENGTH_LONG).show();
                 LinearLayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL,false);
                 binding.contentFilm.recycleviewCast.setLayoutManager(layoutManager);
 
@@ -247,7 +277,7 @@ public class ApiService {
         };
     }
 
-    public static Callback<FilmResource<TvSerie>> TvRecommendCallBack(Context context, ActivityMovieBinding binding) {
+    public static Callback<FilmResource<TvSerie>> TvRecommendCallBack(Context context, ActivityMovieBinding binding,FilmClickListener RecommendedTv) {
         return new Callback<FilmResource<TvSerie>>() {
             @Override
             public void onResponse(Call<FilmResource<TvSerie>> call, Response<FilmResource<TvSerie>> response) {
@@ -259,6 +289,7 @@ public class ApiService {
 
                 if (tvSerieFilmResource != null) {
                     TvSerieAdapter tvSerieAdapter = new TvSerieAdapter(context,tvSerieFilmResource.getResults());
+                    tvSerieAdapter.setFilmClickListener(RecommendedTv);
                     binding.contentFilm.recycleviewRecommend.setAdapter(tvSerieAdapter);
                 }
                 else {
@@ -267,6 +298,7 @@ public class ApiService {
                 }
             }
 
+
             @Override
             public void onFailure(Call<FilmResource<TvSerie>> call, Throwable t) {
 
@@ -274,7 +306,7 @@ public class ApiService {
         };
     }
 
-    public static Callback<FilmResource<Movie>> MovieRecommendCallback(Context context, ActivityMovieBinding binding) {
+    public static Callback<FilmResource<Movie>> MovieRecommendCallback(Context context, ActivityMovieBinding binding,FilmClickListener RecommendedMovie) {
         return new Callback<FilmResource<Movie>>() {
             @Override
             public void onResponse(Call<FilmResource<Movie>> call, Response<FilmResource<Movie>> response) {

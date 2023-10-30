@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.myapp.MovieActivity;
 import com.example.myapp.R;
+import com.example.myapp.film_interface.FilmClickListener;
 import com.example.myapp.model.film.TvSerie;
 
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.List;
 public class TvSerieAdapter extends RecyclerView.Adapter<TvSerieAdapter.ViewHolder> {
     private Context context;
     private List<TvSerie> tvSerieList;
+    private FilmClickListener filmClickListener;
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView movieName;
         public ImageView movieImage;
@@ -41,6 +43,10 @@ public class TvSerieAdapter extends RecyclerView.Adapter<TvSerieAdapter.ViewHold
     public TvSerieAdapter(Context context, List<TvSerie> tvSerieList) {
         this.context = context;
         this.tvSerieList = tvSerieList;
+    }
+
+    public void setFilmClickListener(FilmClickListener filmClickListener) {
+        this.filmClickListener = filmClickListener;
     }
 
     @Override
@@ -62,16 +68,9 @@ public class TvSerieAdapter extends RecyclerView.Adapter<TvSerieAdapter.ViewHold
         viewHolder.card_movie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MoveToDetail(tvSerie);
+                 filmClickListener.onClickItemTvSerie(tvSerie);
             }
         });
-    }
-
-    private void MoveToDetail(TvSerie tvSerie) {
-        Intent intent = new Intent(context, MovieActivity.class);
-        intent.putExtra("id",tvSerie.getId());
-        intent.putExtra("media_type","tv");
-        context.startActivity(intent);
     }
 
     @Override
