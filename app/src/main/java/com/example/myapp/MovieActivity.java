@@ -49,7 +49,7 @@ public class MovieActivity extends AppCompatActivity {
         binding = ActivityMovieBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        Toast.makeText(this, "asasasasasasasa", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "One piece", Toast.LENGTH_LONG).show();
         setSupportActionBar(binding.toolbar);
 
         if (getIntent().getStringExtra("media_type").equals("tv")) {

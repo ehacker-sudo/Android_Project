@@ -1,5 +1,6 @@
 package com.example.myapp.ui.search;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,12 +16,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.example.myapp.MovieActivity;
 import com.example.myapp.R;
 import com.example.myapp.adapter.SearchAdapter;
 import com.example.myapp.api.Retrofit;
 import com.example.myapp.databinding.FragmentSearchBinding;
+import com.example.myapp.film_interface.FilmClickListener;
 import com.example.myapp.model.film.Movie;
+import com.example.myapp.model.film.TvSerie;
 import com.example.myapp.model.resource.FilmResource;
 
 import java.util.ArrayList;
@@ -81,6 +86,20 @@ public class SearchFragment extends Fragment {
                         binding.recycleview.addItemDecoration(dividerItemDecoration);
 
                         SearchAdapter searchAdapter = new SearchAdapter(getContext(),movieList);
+                        searchAdapter.setFilmClickListener(new FilmClickListener() {
+                            @Override
+                            public void onClickItemMovie(Movie movie) {
+                                Intent intent = new Intent(getContext(), MovieActivity.class);
+                                intent.putExtra("id",movie.getId());
+                                intent.putExtra("media_type","movie");
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onClickItemTvSerie(TvSerie tvSerie) {
+
+                            }
+                        });
                         binding.recycleview.setAdapter(searchAdapter);
                     }
                     @Override

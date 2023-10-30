@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.myapp.MovieActivity;
 import com.example.myapp.R;
+import com.example.myapp.film_interface.FilmClickListener;
 import com.example.myapp.model.film.Movie;
 
 import java.util.List;
@@ -23,10 +24,15 @@ import java.util.List;
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private Context context;
     private List<Movie> movieList;
+    private FilmClickListener filmClickListener;
 
     public SearchAdapter(Context context, List<Movie> movieList) {
         this.context = context;
         this.movieList = movieList;
+    }
+
+    public void setFilmClickListener(FilmClickListener filmClickListener) {
+        this.filmClickListener = filmClickListener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -63,16 +69,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         viewHolder.itemSearchedMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MoveToDetail(movie);
+
+                filmClickListener.onClickItemMovie(movie);
             }
         });
-    }
-
-    private void MoveToDetail(Movie movie) {
-        Intent intent = new Intent(context, MovieActivity.class);
-        intent.putExtra("id",movie.getId());
-        intent.putExtra("media_type","movie");
-        context.startActivity(intent);
     }
 
     @Override

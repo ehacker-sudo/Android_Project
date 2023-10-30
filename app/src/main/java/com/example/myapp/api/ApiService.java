@@ -317,6 +317,7 @@ public class ApiService {
 
                 if (movieFilmResource != null) {
                     MovieAdapter movieAdapter = new MovieAdapter(context, movieFilmResource.getResults());
+                    movieAdapter.setFilmClickListener(RecommendedMovie);
                     binding.contentFilm.recycleviewRecommend.setAdapter(movieAdapter);
                 } else {
                     MovieAdapter movieAdapter = new MovieAdapter(context, new ArrayList<>());

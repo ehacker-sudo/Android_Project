@@ -36,7 +36,6 @@
                 android:textSize="25dp"
                 android:layout_marginEnd="15dp"/>
         </RelativeLayout>
-
     </androidx.appcompat.widget.Toolbar>
 
     <include

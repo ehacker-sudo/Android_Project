@@ -69,6 +69,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         viewHolder.card_movie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 filmClickListener.onClickItemMovie(movie);
             }
         });
