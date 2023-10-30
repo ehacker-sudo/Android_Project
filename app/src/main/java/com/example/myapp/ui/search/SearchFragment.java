@@ -24,12 +24,18 @@ import com.example.myapp.adapter.SearchAdapter;
 import com.example.myapp.api.Retrofit;
 import com.example.myapp.databinding.FragmentSearchBinding;
 import com.example.myapp.film_interface.FilmClickListener;
+import com.example.myapp.model.film.Key;
 import com.example.myapp.model.film.Movie;
+import com.example.myapp.model.film.Search;
 import com.example.myapp.model.film.TvSerie;
 import com.example.myapp.model.resource.FilmResource;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,20 +78,50 @@ public class SearchFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Retrofit.retrofit.getMovieSearch(query,"vi-Vn", 1).enqueue(new retrofit2.Callback<FilmResource<Movie>>() {
+//                Retrofit.retrofit.getMovieSearch(query,"vi-Vn", 1).enqueue(new retrofit2.Callback<FilmResource<Movie>>() {
+//                    @Override
+//                    public void onResponse(retrofit2.Call<FilmResource<Movie>> call, retrofit2.Response<FilmResource<Movie>> response) {
+//                        FilmResource<Movie> filmResource = response.body();
+//                        List<Movie> movieList = new ArrayList<>();
+//
+//                        for (int i = 0; i < filmResource.getResults().size(); i++) {
+//                            movieList.add(filmResource.getResults().get(i));
+//                        }
+//
+//                        RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
+//                        binding.recycleview.addItemDecoration(dividerItemDecoration);
+//
+//                        SearchAdapter searchAdapter = new SearchAdapter(getContext(),movieList);
+//                        searchAdapter.setFilmClickListener(new FilmClickListener() {
+//                            @Override
+//                            public void onClickItemMovie(Movie movie) {
+//                                Intent intent = new Intent(getContext(), MovieActivity.class);
+//                                intent.putExtra("id",movie.getId());
+//                                intent.putExtra("media_type","movie");
+//                                startActivity(intent);
+//                            }
+//
+//                            @Override
+//                            public void onClickItemTvSerie(TvSerie tvSerie) {
+//
+//                            }
+//                        });
+//                        binding.recycleview.setAdapter(searchAdapter);
+//                    }
+//                    @Override
+//                    public void onFailure(retrofit2.Call<FilmResource<Movie>> call, Throwable t) {
+//
+//                    }
+//                });
+                Retrofit.retrofit.getMultiSearch(query,"",1).enqueue(new Callback<FilmResource<Search>>() {
                     @Override
-                    public void onResponse(retrofit2.Call<FilmResource<Movie>> call, retrofit2.Response<FilmResource<Movie>> response) {
-                        FilmResource<Movie> filmResource = response.body();
-                        List<Movie> movieList = new ArrayList<>();
-
-                        for (int i = 0; i < filmResource.getResults().size(); i++) {
-                            movieList.add(filmResource.getResults().get(i));
-                        }
+                    public void onResponse(Call<FilmResource<Search>> call, Response<FilmResource<Search>> response) {
+                        FilmResource<Search> searchFilmResource = response.body();
 
                         RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
                         binding.recycleview.addItemDecoration(dividerItemDecoration);
 
-                        SearchAdapter searchAdapter = new SearchAdapter(getContext(),movieList);
+                        SearchAdapter searchAdapter = new SearchAdapter(getContext(),searchFilmResource.getResults());
                         searchAdapter.setFilmClickListener(new FilmClickListener() {
                             @Override
                             public void onClickItemMovie(Movie movie) {
@@ -97,17 +133,20 @@ public class SearchFragment extends Fragment {
 
                             @Override
                             public void onClickItemTvSerie(TvSerie tvSerie) {
-
+                                Intent intent = new Intent(getContext(), MovieActivity.class);
+                                intent.putExtra("id",tvSerie.getId());
+                                intent.putExtra("media_type","tv");
+                                startActivity(intent);
                             }
                         });
                         binding.recycleview.setAdapter(searchAdapter);
                     }
+
                     @Override
-                    public void onFailure(retrofit2.Call<FilmResource<Movie>> call, Throwable t) {
+                    public void onFailure(Call<FilmResource<Search>> call, Throwable t) {
 
                     }
                 });
-
                 return false;
             }
 

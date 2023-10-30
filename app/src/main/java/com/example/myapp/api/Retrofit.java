@@ -1,7 +1,9 @@
 package com.example.myapp.api;
 
+import com.example.myapp.model.film.Key;
 import com.example.myapp.model.film.Movie;
 import com.example.myapp.model.film.MovieInfo;
+import com.example.myapp.model.film.Search;
 import com.example.myapp.model.film.TvSerie;
 import com.example.myapp.model.film.TvSerieInfo;
 import com.example.myapp.model.resource.CreditsResource;
@@ -55,6 +57,17 @@ public interface Retrofit {
     })
     @GET("3/search/movie")
     Call<FilmResource<Movie>> getMovieSearch(
+            @Query("query") String query,
+            @Query("language") String language,
+            @Query("page") int page
+    );
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/search/multi")
+    Call<FilmResource<Search>> getMultiSearch(
             @Query("query") String query,
             @Query("language") String language,
             @Query("page") int page

@@ -16,6 +16,7 @@ public class TvSerie {
     private long vote_count;
     private String media_type;
 
+
     public String getMedia_type() {
         return media_type;
     }

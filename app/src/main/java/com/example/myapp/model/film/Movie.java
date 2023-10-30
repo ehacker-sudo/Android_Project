@@ -18,6 +18,10 @@ public class Movie {
     private String origin_country;
     private String media_type;
 
+    public Movie() {
+
+    }
+
     public Movie(String poster_path, String title, double vote_average) {
         this.poster_path = poster_path;
         this.title = title;

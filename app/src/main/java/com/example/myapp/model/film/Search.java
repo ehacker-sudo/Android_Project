@@ -1,10 +1,14 @@
 package com.example.myapp.model.film;
 
-public class Key {
+public class Search {
     protected int id;
     protected String media_type;
     protected String poster_path;
     protected String profile_path;
+    protected String name;
+    protected String title;
+    protected String first_air_date;
+    protected String release_date;
 
     public int getId() {
         return id;
@@ -36,5 +40,37 @@ public class Key {
 
     public void setProfile_path(String profile_path) {
         this.profile_path = profile_path;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getFirst_air_date() {
+        return first_air_date;
+    }
+
+    public void setFirst_air_date(String first_air_date) {
+        this.first_air_date = first_air_date;
+    }
+
+    public String getRelease_date() {
+        return release_date;
+    }
+
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
     }
 }

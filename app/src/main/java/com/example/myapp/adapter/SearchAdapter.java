@@ -17,18 +17,21 @@ import com.bumptech.glide.Glide;
 import com.example.myapp.MovieActivity;
 import com.example.myapp.R;
 import com.example.myapp.film_interface.FilmClickListener;
+import com.example.myapp.model.film.Key;
 import com.example.myapp.model.film.Movie;
+import com.example.myapp.model.film.Search;
+import com.example.myapp.model.film.TvSerie;
 
 import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
     private Context context;
-    private List<Movie> movieList;
+    private List<Search> keyList;
     private FilmClickListener filmClickListener;
 
-    public SearchAdapter(Context context, List<Movie> movieList) {
+    public SearchAdapter(Context context, List<Search> keyList) {
         this.context = context;
-        this.movieList = movieList;
+        this.keyList = keyList;
     }
 
     public void setFilmClickListener(FilmClickListener filmClickListener) {
@@ -59,24 +62,45 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, @SuppressLint("RecyclerView") int position) {
-        Movie movie = movieList.get(position);
-        if (movie == null) {
+        Search search = keyList.get(position);
+        if (search == null) {
             return;
         }
-        viewHolder.tvName.setText(movie.getTitle());
-        viewHolder.tvInfo.setText(movie.getRelease_date());
-        Glide.with(context).load("https://image.tmdb.org/t/p/w500" + movie.getPoster_path()).into(viewHolder.imgMovie);
-        viewHolder.itemSearchedMovie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                filmClickListener.onClickItemMovie(movie);
-            }
-        });
+        if (search.getMedia_type().equals("tv")) {
+            viewHolder.tvName.setText(search.getName());
+            viewHolder.tvInfo.setText(search.getFirst_air_date());
+            Glide.with(context).load("https://image.tmdb.org/t/p/w500" + search.getPoster_path()).into(viewHolder.imgMovie);
+            viewHolder.itemSearchedMovie.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TvSerie tvSerie = new TvSerie();
+                    tvSerie.setId(search.getId());
+                    tvSerie.setMedia_type(search.getMedia_type());
+                    filmClickListener.onClickItemTvSerie(tvSerie);
+                }
+            });
+        } else if (search.getMedia_type().equals("movie")) {
+            viewHolder.tvName.setText(search.getTitle());
+            viewHolder.tvInfo.setText(search.getRelease_date());
+            Glide.with(context).load("https://image.tmdb.org/t/p/w500" + search.getPoster_path()).into(viewHolder.imgMovie);
+            viewHolder.itemSearchedMovie.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Movie movie = new Movie();
+                    movie.setId(search.getId());
+                    movie.setMedia_type(search.getMedia_type());
+                    filmClickListener.onClickItemMovie(movie);
+                }
+            });
+        } else if(search.getMedia_type().equals("person")) {
+            viewHolder.tvName.setText(search.getName());
+            viewHolder.tvInfo.setText("");
+            Glide.with(context).load("https://image.tmdb.org/t/p/w500" + search.getProfile_path()).into(viewHolder.imgMovie);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return movieList.size();
+        return keyList.size();
     }
 }
