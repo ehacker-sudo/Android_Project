@@ -78,41 +78,6 @@ public class SearchFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-//                Retrofit.retrofit.getMovieSearch(query,"vi-Vn", 1).enqueue(new retrofit2.Callback<FilmResource<Movie>>() {
-//                    @Override
-//                    public void onResponse(retrofit2.Call<FilmResource<Movie>> call, retrofit2.Response<FilmResource<Movie>> response) {
-//                        FilmResource<Movie> filmResource = response.body();
-//                        List<Movie> movieList = new ArrayList<>();
-//
-//                        for (int i = 0; i < filmResource.getResults().size(); i++) {
-//                            movieList.add(filmResource.getResults().get(i));
-//                        }
-//
-//                        RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
-//                        binding.recycleview.addItemDecoration(dividerItemDecoration);
-//
-//                        SearchAdapter searchAdapter = new SearchAdapter(getContext(),movieList);
-//                        searchAdapter.setFilmClickListener(new FilmClickListener() {
-//                            @Override
-//                            public void onClickItemMovie(Movie movie) {
-//                                Intent intent = new Intent(getContext(), MovieActivity.class);
-//                                intent.putExtra("id",movie.getId());
-//                                intent.putExtra("media_type","movie");
-//                                startActivity(intent);
-//                            }
-//
-//                            @Override
-//                            public void onClickItemTvSerie(TvSerie tvSerie) {
-//
-//                            }
-//                        });
-//                        binding.recycleview.setAdapter(searchAdapter);
-//                    }
-//                    @Override
-//                    public void onFailure(retrofit2.Call<FilmResource<Movie>> call, Throwable t) {
-//
-//                    }
-//                });
                 Retrofit.retrofit.getMultiSearch(query,"",1).enqueue(new Callback<FilmResource<Search>>() {
                     @Override
                     public void onResponse(Call<FilmResource<Search>> call, Response<FilmResource<Search>> response) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,9 +20,13 @@ import com.example.myapp.adapter.CollectionAdapter;
 import com.example.myapp.adapter.CrewAdapter;
 import com.example.myapp.adapter.GenresAdapter;
 import com.example.myapp.adapter.MovieAdapter;
+import com.example.myapp.adapter.MoviePagnateAdapter;
+import com.example.myapp.adapter.TvPagnateAdapter;
 import com.example.myapp.adapter.TvSerieAdapter;
 import com.example.myapp.databinding.ActivityMovieBinding;
+import com.example.myapp.databinding.ActivityPaginateBinding;
 import com.example.myapp.film_interface.FilmClickListener;
+import com.example.myapp.filter.PaginateActivity;
 import com.example.myapp.model.film.Movie;
 import com.example.myapp.model.film.MovieInfo;
 import com.example.myapp.model.film.TvSerie;
@@ -327,6 +332,54 @@ public class ApiService {
 
             @Override
             public void onFailure(Call<FilmResource<Movie>> call, Throwable t) {
+
+            }
+        };
+    }
+
+    public static Callback<FilmResource<Movie>> PopularMoviePagnateCallBack(Context context, ActivityPaginateBinding binding, FilmClickListener filmClickListener) {
+        return new Callback<FilmResource<Movie>>() {
+            @Override
+            public void onResponse(Call<FilmResource<Movie>> call, Response<FilmResource<Movie>> response) {
+                FilmResource<Movie> movieFilmResource = response.body();
+
+                LinearLayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
+                binding.recycleviewPagnate.setLayoutManager(layoutManager);
+
+                RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecoration(context,DividerItemDecoration.VERTICAL);
+                binding.recycleviewPagnate.addItemDecoration(dividerItemDecoration);
+
+                MoviePagnateAdapter moviePagnateAdapter = new MoviePagnateAdapter(context,movieFilmResource.getResults());
+                moviePagnateAdapter.setFilmClickListener(filmClickListener);
+                binding.recycleviewPagnate.setAdapter(moviePagnateAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<FilmResource<Movie>> call, Throwable t) {
+
+            }
+        };
+    }
+
+    public static Callback<FilmResource<TvSerie>> PopularTvPagnateCallBack(Context context, ActivityPaginateBinding binding, FilmClickListener filmClickListener) {
+        return new Callback<FilmResource<TvSerie>>() {
+            @Override
+            public void onResponse(Call<FilmResource<TvSerie>> call, Response<FilmResource<TvSerie>> response) {
+                FilmResource<TvSerie> tvSerieFilmResource = response.body();
+
+                LinearLayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
+                binding.recycleviewPagnate.setLayoutManager(layoutManager);
+
+                RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecoration(context,DividerItemDecoration.VERTICAL);
+                binding.recycleviewPagnate.addItemDecoration(dividerItemDecoration);
+
+                TvPagnateAdapter tvPagnateAdapter = new TvPagnateAdapter(context,tvSerieFilmResource.getResults());
+                tvPagnateAdapter.setFilmClickListener(filmClickListener);
+                binding.recycleviewPagnate.setAdapter(tvPagnateAdapter);
+            }
+
+            @Override
+            public void onFailure(Call<FilmResource<TvSerie>> call, Throwable t) {
 
             }
         };

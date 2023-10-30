@@ -1,32 +1,30 @@
 package com.example.myapp.adapter;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.myapp.MovieActivity;
 import com.example.myapp.R;
 import com.example.myapp.film_interface.FilmClickListener;
 import com.example.myapp.model.film.Movie;
 
 import java.util.List;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+public class MoviePagnateAdapter extends RecyclerView.Adapter<MoviePagnateAdapter.ViewHolder> {
     private Context context;
     private List<Movie> movieList;
     private FilmClickListener filmClickListener;
 
-    public MovieAdapter(Context context, List<Movie> movieList) {
+    public MoviePagnateAdapter(Context context, List<Movie> movieList) {
         this.context = context;
         this.movieList = movieList;
     }
@@ -36,46 +34,42 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView movieName;
-        public ImageView movieImage;
-        public TextView movieRate;
-        public CardView card_movie;
+        public TextView tvName;
+        public LinearLayout itemSearchedMovie;
+        public ImageView imgMovie;
+        public TextView tvInfo;
 
         public ViewHolder(View view) {
             super(view);
-            movieName = view.findViewById(R.id.movie_name);
-            movieImage = view.findViewById(R.id.movie_image);
-            movieRate = view.findViewById(R.id.movie_rate);
-            card_movie = view.findViewById(R.id.card_movie);
+            tvName = view.findViewById(R.id.tv_name);
+            itemSearchedMovie = view.findViewById(R.id.item_searched_movie);
+            imgMovie = view.findViewById(R.id.img_movie);
+            tvInfo = view.findViewById(R.id.tv_info);
         }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_movie, viewGroup, false);
+                .inflate(R.layout.item_search, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(ViewHolder viewHolder, @SuppressLint("RecyclerView") int position) {
         Movie movie = movieList.get(position);
         if (movie == null) {
             return;
         }
-        viewHolder.movieName.setText(movie.getTitle());
-        viewHolder.movieRate.setText(Double.toString(movie.getVote_average()));
-        Glide.with(context).load("https://image.tmdb.org/t/p/w500" + movie.getPoster_path()).into(viewHolder.movieImage);
-        viewHolder.card_movie.setOnClickListener(new View.OnClickListener() {
+        viewHolder.tvName.setText(movie.getTitle());
+        viewHolder.tvInfo.setText(movie.getRelease_date());
+        Glide.with(context).load("https://image.tmdb.org/t/p/w500" + movie.getPoster_path()).into(viewHolder.imgMovie);
+        viewHolder.itemSearchedMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 filmClickListener.onClickItemMovie(movie);
             }
         });
-    }
-
-    public void release(){
-        context = null;
     }
 
     @Override

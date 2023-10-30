@@ -18,6 +18,8 @@ import com.example.myapp.R;
 import com.example.myapp.adapter.CollectionAdapter;
 import com.example.myapp.auth.AuthActivity;
 import com.example.myapp.databinding.FragmentHomeBinding;
+import com.example.myapp.film_interface.CollectListener;
+import com.example.myapp.filter.PaginateActivity;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
@@ -38,6 +40,14 @@ public class HomeFragment extends Fragment {
                 "Bộ phim sắp ra mắt"
         };
         CollectionAdapter collectionAdapter = new CollectionAdapter(getContext(),data);
+        collectionAdapter.setCollectListener(new CollectListener() {
+            @Override
+            public void OnClickListener(String collect) {
+                Intent intent = new Intent(getContext(), PaginateActivity.class);
+                intent.putExtra("collect",collect);
+                startActivity(intent);
+            }
+        });
         binding.rcvCollection.setAdapter(collectionAdapter);
 
         return root;
