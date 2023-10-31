@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,67 +16,64 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.myapp.MovieActivity;
 import com.example.myapp.R;
+import com.example.myapp.film_interface.CollectListener;
+import com.example.myapp.film_interface.ExtraInfoListener;
+import com.example.myapp.film_interface.FilmClickListener;
+import com.example.myapp.model.film.ExtraInfo;
 import com.example.myapp.model.film.TvSerie;
 
 import java.util.List;
 
 public class TvExtraInfoAdapter extends RecyclerView.Adapter<TvExtraInfoAdapter.ViewHolder> {
     private Context context;
-    private List<TvSerie> tvSerieList;
+    private List<ExtraInfo> extraInfoList;
+    private ExtraInfoListener extraInfoListener;
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView movieName;
-        public ImageView movieImage;
-        public TextView movieRate;
-        public CardView card_movie;
+        public TextView tvFilmContent;
+        public TextView tvFirmInfo;
+        public LinearLayout detailInfo;
 
         public ViewHolder(View view) {
             super(view);
-            movieName = view.findViewById(R.id.movie_name);
-            movieImage = view.findViewById(R.id.movie_image);
-            movieRate = view.findViewById(R.id.movie_rate);
-            card_movie = view.findViewById(R.id.card_movie);
+            tvFilmContent = view.findViewById(R.id.tv_film_content);
+            tvFirmInfo = view.findViewById(R.id.tv_firm_info);
+            detailInfo = view.findViewById(R.id.detail_info);
         }
     }
 
-    public TvExtraInfoAdapter(Context context, List<TvSerie> tvSerieList) {
+    public TvExtraInfoAdapter(Context context, List<ExtraInfo> extraInfoList) {
         this.context = context;
-        this.tvSerieList = tvSerieList;
+        this.extraInfoList = extraInfoList;
+    }
+
+    public void setExtraInfoListener(ExtraInfoListener extraInfoListener) {
+        this.extraInfoListener = extraInfoListener;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.item_movie, viewGroup, false);
+                .inflate(R.layout.item_extra_info, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-        TvSerie tvSerie = tvSerieList.get(position);
-        if (tvSerie == null) {
-            return;
-        }
-        viewHolder.movieName.setText(tvSerie.getName());
-        Glide.with(context).load("https://image.tmdb.org/t/p/w500" + tvSerie.getPoster_path()).into(viewHolder.movieImage);
-        viewHolder.movieRate.setText(Double.toString(tvSerie.getVote_average()));
-        viewHolder.card_movie.setOnClickListener(new View.OnClickListener() {
+//        TvSerie tvSerie = tvSerieList.get(position);
+        ExtraInfo extraInfo = extraInfoList.get(position);
+        viewHolder.tvFilmContent.setText(extraInfo.getName());
+        viewHolder.tvFirmInfo.setText(extraInfo.getDetail());
+        viewHolder.detailInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MoveToDetail(tvSerie);
+                extraInfoListener.OnClickListener(extraInfo);
             }
         });
     }
 
-    private void MoveToDetail(TvSerie tvSerie) {
-        Intent intent = new Intent(context, MovieActivity.class);
-        intent.putExtra("id",tvSerie.getId());
-        intent.putExtra("media_type","tv");
-        context.startActivity(intent);
-    }
-
     @Override
     public int getItemCount() {
-        return tvSerieList.size();
+        return extraInfoList.size();
     }
 }
 

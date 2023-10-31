@@ -12,7 +12,9 @@ public class TvSerieInfo {
     private int id;
     private boolean in_production;
     private String last_air_date;
+    private Episode last_episode_to_air;
     private String name;
+    private Episode next_episode_to_air;
     private String number_of_episodes;
     private String number_of_seasons;
     private String overview;
@@ -155,5 +157,21 @@ public class TvSerieInfo {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Episode getLast_episode_to_air() {
+        return last_episode_to_air;
+    }
+
+    public void setLast_episode_to_air(Episode last_episode_to_air) {
+        this.last_episode_to_air = last_episode_to_air;
+    }
+
+    public Episode getNext_episode_to_air() {
+        return next_episode_to_air;
+    }
+
+    public void setNext_episode_to_air(Episode next_episode_to_air) {
+        this.next_episode_to_air = next_episode_to_air;
     }
 }

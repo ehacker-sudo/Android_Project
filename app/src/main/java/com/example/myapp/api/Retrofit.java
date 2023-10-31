@@ -4,6 +4,7 @@ import com.example.myapp.model.film.Key;
 import com.example.myapp.model.film.Movie;
 import com.example.myapp.model.film.MovieInfo;
 import com.example.myapp.model.film.Search;
+import com.example.myapp.model.film.Season;
 import com.example.myapp.model.film.TvSerie;
 import com.example.myapp.model.film.TvSerieInfo;
 import com.example.myapp.model.resource.CreditsResource;
@@ -188,6 +189,30 @@ public interface Retrofit {
             @Path("movie_id") int movie_id,
             @Query("language") String language,
             @Query("page") int page
+    );
+
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/tv/{series_id}/season/{season_number}")
+    Call<Season> getTvSeasonsDetails(
+            @Path("series_id") int series_id,
+            @Path("season_number") int season_number,
+            @Query("language") String language
+    );
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/tv/{series_id}/season/{season_number}/episode/{episode_number}")
+    Call<ImageType> getTvSeasonsImage(
+            @Path("series_id") int series_id,
+            @Path("season_number") int season_number,
+            @Path("episode_number") int episode_number,
+            @Query("language") String language
     );
 
 

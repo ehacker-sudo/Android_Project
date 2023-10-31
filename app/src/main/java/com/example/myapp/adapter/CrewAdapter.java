@@ -31,7 +31,7 @@ public class CrewAdapter extends RecyclerView.Adapter<CrewAdapter.ViewHolder> {
 
         public ViewHolder(View view) {
             super(view);
-            tvFirmContent = view.findViewById(R.id.tv_firm_content);
+            tvFirmContent = view.findViewById(R.id.tv_film_content);
             tvFirmInfo = view.findViewById(R.id.tv_firm_info);
         }
     }

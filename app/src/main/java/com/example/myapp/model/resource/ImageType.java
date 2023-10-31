@@ -9,6 +9,7 @@ public class ImageType {
     private List<Image> backdrops;
     private List<Image> logos;
     private List<Image> posters;
+    private List<Image> stills;
 
     public int getId() {
         return id;
@@ -40,5 +41,13 @@ public class ImageType {
 
     public void setPosters(List<Image> posters) {
         this.posters = posters;
+    }
+
+    public List<Image> getStills() {
+        return stills;
+    }
+
+    public void setStills(List<Image> stills) {
+        this.stills = stills;
     }
 }

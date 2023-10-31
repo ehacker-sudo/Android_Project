@@ -2,6 +2,7 @@ package com.example.myapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,11 +21,16 @@ import com.example.myapp.adapter.AlbumAdapter;
 import com.example.myapp.adapter.CastAdapter;
 import com.example.myapp.adapter.CrewAdapter;
 import com.example.myapp.adapter.GenresAdapter;
+import com.example.myapp.adapter.TvExtraInfoAdapter;
+import com.example.myapp.adapter.TvPagnateAdapter;
 import com.example.myapp.adapter.TvSerieAdapter;
 import com.example.myapp.api.ApiService;
 import com.example.myapp.api.Retrofit;
 import com.example.myapp.databinding.ActivityMovieBinding;
+import com.example.myapp.film_interface.CollectListener;
+import com.example.myapp.film_interface.ExtraInfoListener;
 import com.example.myapp.film_interface.FilmClickListener;
+import com.example.myapp.model.film.ExtraInfo;
 import com.example.myapp.model.film.Movie;
 import com.example.myapp.model.film.MovieInfo;
 import com.example.myapp.model.film.TvSerie;
@@ -54,7 +60,14 @@ public class MovieActivity extends AppCompatActivity {
 
         if (getIntent().getStringExtra("media_type").equals("tv")) {
             Retrofit.retrofit.getTvSerieDetails(getIntent().getIntExtra("id",37854),"en")
-                    .enqueue(ApiService.TvDetailsCallBack(getApplicationContext(),binding));
+                    .enqueue(ApiService.TvDetailsCallBack(getApplicationContext(),binding,new ExtraInfoListener() {
+                        @Override
+                        public void OnClickListener(ExtraInfo extraInfo) {
+                            Intent intent = new Intent(MovieActivity.this, SeasonActivity.class);
+                            intent.putExtra("id",extraInfo.getId());
+                            startActivity(intent);
+                        }
+                    }));
 
             Retrofit.retrofit.getTVSeriesImages(getIntent().getIntExtra("id",37854),"")
                     .enqueue(ApiService.SliderCallBack(binding));
@@ -108,6 +121,9 @@ public class MovieActivity extends AppCompatActivity {
 
                         }
                     }));
+        } else if (getIntent().getStringExtra("media_type").equals("episode")) {
+            Retrofit.retrofit.getTvSeasonsImage(getIntent().getIntExtra("series_id",37854),getIntent().getIntExtra("season_number",1),getIntent().getIntExtra("id",1),"")
+                    .enqueue(ApiService.SliderCallBack(binding));
         }
 
 

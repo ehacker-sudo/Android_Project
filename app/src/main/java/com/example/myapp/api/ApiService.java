@@ -24,13 +24,16 @@ import com.example.myapp.adapter.CrewAdapter;
 import com.example.myapp.adapter.GenresAdapter;
 import com.example.myapp.adapter.MovieAdapter;
 import com.example.myapp.adapter.MoviePagnateAdapter;
+import com.example.myapp.adapter.TvExtraInfoAdapter;
 import com.example.myapp.adapter.TvPagnateAdapter;
 import com.example.myapp.adapter.TvSerieAdapter;
 import com.example.myapp.databinding.ActivityMovieBinding;
 import com.example.myapp.databinding.ActivityPaginateBinding;
+import com.example.myapp.film_interface.ExtraInfoListener;
 import com.example.myapp.film_interface.FilmClickListener;
 import com.example.myapp.film_interface.PaginationScrollListener;
 import com.example.myapp.filter.PaginateActivity;
+import com.example.myapp.model.film.ExtraInfo;
 import com.example.myapp.model.film.Movie;
 import com.example.myapp.model.film.MovieInfo;
 import com.example.myapp.model.film.TvSerie;
@@ -133,9 +136,12 @@ public class ApiService {
 
 
                 if (imageType.getBackdrops().size() < 3) {
-                    imageList.add(new SlideModel("https://bit.ly/2YoJ77H", "The animal population decreased by 58 percent in 42 years.", ScaleTypes.CENTER_CROP));
-                    imageList.add(new SlideModel("https://bit.ly/2BteuF2", "Elephants and tigers may become extinct.",ScaleTypes.CENTER_CROP));
-                    imageList.add(new SlideModel("https://bit.ly/3fLJf72", "And people do that.",ScaleTypes.CENTER_CROP));
+                    for (int i = 0; i < imageType.getBackdrops().size(); i++) {
+                        imageList.add(new SlideModel("https://image.tmdb.org/t/p/w500" + imageType.getBackdrops().get(i).getFile_path(), "",ScaleTypes.CENTER_CROP));
+                    }
+//                    imageList.add(new SlideModel("https://bit.ly/2YoJ77H", "The animal population decreased by 58 percent in 42 years.", ScaleTypes.CENTER_CROP));
+//                    imageList.add(new SlideModel("https://bit.ly/2BteuF2", "Elephants and tigers may become extinct.",ScaleTypes.CENTER_CROP));
+//                    imageList.add(new SlideModel("https://bit.ly/3fLJf72", "And people do that.",ScaleTypes.CENTER_CROP));
                 }
                 else {
                     imageList.add(new SlideModel("https://image.tmdb.org/t/p/w500" + imageType.getBackdrops().get(0).getFile_path(), "",ScaleTypes.CENTER_CROP));
@@ -154,7 +160,7 @@ public class ApiService {
             }
         };
     }
-    public static Callback<TvSerieInfo> TvDetailsCallBack(Context context, ActivityMovieBinding binding) {
+    public static Callback<TvSerieInfo> TvDetailsCallBack(Context context, ActivityMovieBinding binding, ExtraInfoListener extraInfoListener) {
         return new Callback<TvSerieInfo>() {
             @Override
             public void onResponse(Call<TvSerieInfo> call, Response<TvSerieInfo> response) {
@@ -188,6 +194,26 @@ public class ApiService {
 
                 GenresAdapter genresAdapter = new GenresAdapter(tvSerieInfo.getGenres());
                 binding.contentFilm.recycleviewGenres.setAdapter(genresAdapter);
+
+
+                LinearLayoutManager extra_info_layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
+                binding.contentFilm.recycleviewExtraInfo.setLayoutManager(extra_info_layoutManager);
+
+                RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecoration(context,DividerItemDecoration.VERTICAL);
+                binding.contentFilm.recycleviewExtraInfo.addItemDecoration(dividerItemDecoration);
+
+                List<ExtraInfo> extraInfoList = new ArrayList<>();
+                extraInfoList.add(new ExtraInfo(tvSerieInfo.getId(),"Các tập phim",tvSerieInfo.getNumber_of_episodes() + " tập","Session"));
+                if (tvSerieInfo.isIn_production()){
+                    extraInfoList.add(new ExtraInfo(tvSerieInfo.getId(),"Tập phim tiếp theo",tvSerieInfo.getNext_episode_to_air().getAir_date(),"Next Ep"));
+                }
+
+                TvExtraInfoAdapter tvExtraInfoAdapter = new TvExtraInfoAdapter(context,extraInfoList);
+                tvExtraInfoAdapter.setExtraInfoListener(extraInfoListener);
+
+                binding.contentFilm.recycleviewExtraInfo.setAdapter(tvExtraInfoAdapter);
+
+
 
             }
 
