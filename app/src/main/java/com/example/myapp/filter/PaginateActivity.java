@@ -1,12 +1,14 @@
 package com.example.myapp.filter;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,9 +22,13 @@ import com.example.myapp.api.Retrofit;
 import com.example.myapp.databinding.ActivityMovieBinding;
 import com.example.myapp.databinding.ActivityPaginateBinding;
 import com.example.myapp.film_interface.FilmClickListener;
+import com.example.myapp.film_interface.PaginationScrollListener;
 import com.example.myapp.model.film.Movie;
 import com.example.myapp.model.film.TvSerie;
 import com.example.myapp.model.resource.FilmResource;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -57,7 +63,7 @@ public class PaginateActivity extends AppCompatActivity {
             binding.toolbarTitle.setText(toolbar_title + "...");
         }
         if (collect.contains("Các bộ phim")) {
-            Retrofit.retrofit.getPopularMovie("vi-Vn", 1)
+            Retrofit.retrofit.getPopularMovie("en", 1)
                     .enqueue(ApiService.PopularMoviePagnateCallBack(getApplicationContext(), binding, new FilmClickListener() {
                         @Override
                         public void onClickItemMovie(Movie movie) {
@@ -73,7 +79,7 @@ public class PaginateActivity extends AppCompatActivity {
                         }
                     }));
         } else if (collect.contains("Các chương trình truyền hình")) {
-            Retrofit.retrofit.getPopularTvSeries("vi-Vn", 1)
+            Retrofit.retrofit.getPopularTvSeries("en", 1)
                     .enqueue(ApiService.PopularTvPagnateCallBack(getApplicationContext(), binding, new FilmClickListener() {
                         @Override
                         public void onClickItemMovie(Movie movie) {

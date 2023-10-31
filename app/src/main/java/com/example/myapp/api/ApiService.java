@@ -2,8 +2,11 @@ package com.example.myapp.api;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +29,7 @@ import com.example.myapp.adapter.TvSerieAdapter;
 import com.example.myapp.databinding.ActivityMovieBinding;
 import com.example.myapp.databinding.ActivityPaginateBinding;
 import com.example.myapp.film_interface.FilmClickListener;
+import com.example.myapp.film_interface.PaginationScrollListener;
 import com.example.myapp.filter.PaginateActivity;
 import com.example.myapp.model.film.Movie;
 import com.example.myapp.model.film.MovieInfo;
@@ -81,7 +85,6 @@ public class ApiService {
             }
         };
     }
-
     public static Callback<FilmResource<TvSerie>> PopularTvSeriesCallback(CollectionAdapter.ViewHolder holder, Context context) {
         return new Callback<FilmResource<TvSerie>>() {
             @Override
@@ -120,7 +123,6 @@ public class ApiService {
             }
         };
     }
-
     public static Callback<ImageType> SliderCallBack(ActivityMovieBinding binding) {
         return new Callback<ImageType>() {
             @Override
@@ -195,7 +197,6 @@ public class ApiService {
             }
         };
     }
-
     public static Callback<MovieInfo> MovieDetailCallBack(Context context, ActivityMovieBinding binding) {
         return new Callback<MovieInfo>() {
             @Override
@@ -235,8 +236,6 @@ public class ApiService {
             }
         };
     }
-
-
     public static Callback<CreditsResource> TvCreditCallBack(Context context, ActivityMovieBinding binding) {
         return new Callback<CreditsResource>() {
             @Override
@@ -260,7 +259,6 @@ public class ApiService {
             }
         };
     }
-
     public static Callback<ImageType> TvImageCallBack(Context context, ActivityMovieBinding binding) {
         return new Callback<ImageType>() {
             @Override
@@ -281,7 +279,6 @@ public class ApiService {
             }
         };
     }
-
     public static Callback<FilmResource<TvSerie>> TvRecommendCallBack(Context context, ActivityMovieBinding binding,FilmClickListener RecommendedTv) {
         return new Callback<FilmResource<TvSerie>>() {
             @Override
@@ -310,7 +307,6 @@ public class ApiService {
             }
         };
     }
-
     public static Callback<FilmResource<Movie>> MovieRecommendCallback(Context context, ActivityMovieBinding binding,FilmClickListener RecommendedMovie) {
         return new Callback<FilmResource<Movie>>() {
             @Override
@@ -336,12 +332,17 @@ public class ApiService {
             }
         };
     }
-
     public static Callback<FilmResource<Movie>> PopularMoviePagnateCallBack(Context context, ActivityPaginateBinding binding, FilmClickListener filmClickListener) {
         return new Callback<FilmResource<Movie>>() {
+
+            private MoviePagnateAdapter moviePagnateAdapter;
+            private FilmResource<Movie> movieFilmResource;
+            private int count = 0;
+            private int page = 1;
+
             @Override
             public void onResponse(Call<FilmResource<Movie>> call, Response<FilmResource<Movie>> response) {
-                FilmResource<Movie> movieFilmResource = response.body();
+                movieFilmResource = response.body();
 
                 LinearLayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
                 binding.recycleviewPagnate.setLayoutManager(layoutManager);
@@ -349,9 +350,41 @@ public class ApiService {
                 RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecoration(context,DividerItemDecoration.VERTICAL);
                 binding.recycleviewPagnate.addItemDecoration(dividerItemDecoration);
 
-                MoviePagnateAdapter moviePagnateAdapter = new MoviePagnateAdapter(context,movieFilmResource.getResults());
+                moviePagnateAdapter = new MoviePagnateAdapter(context,movieFilmResource.getResults());
                 moviePagnateAdapter.setFilmClickListener(filmClickListener);
                 binding.recycleviewPagnate.setAdapter(moviePagnateAdapter);
+
+                binding.recycleviewPagnate.setOnScrollListener(new RecyclerView.OnScrollListener() {
+                    @Override
+                    public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                        if (dy > 0){
+
+                            Toast.makeText(context, "" +dy, Toast.LENGTH_LONG).show();
+                            if (dy > 500) {
+                                page++;
+                                Retrofit.retrofit.getPopularMovie("vi-Vn", page)
+                                        .enqueue(new Callback<FilmResource<Movie>>() {
+                                            @Override
+                                            public void onResponse(Call<FilmResource<Movie>> call, Response<FilmResource<Movie>> response) {
+                                                for (int i = 0; i < response.body().getResults().size(); i++) {
+                                                    movieFilmResource.getResults().add(response.body().getResults().get(i));
+                                                }
+
+                                                moviePagnateAdapter = new MoviePagnateAdapter(context,movieFilmResource.getResults());
+                                                moviePagnateAdapter.setFilmClickListener(filmClickListener);
+
+                                                binding.recycleviewPagnate.setAdapter(moviePagnateAdapter);
+                                            }
+
+                                            @Override
+                                            public void onFailure(Call<FilmResource<Movie>> call, Throwable t) {
+
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                });
             }
 
             @Override
@@ -360,12 +393,19 @@ public class ApiService {
             }
         };
     }
-
     public static Callback<FilmResource<TvSerie>> PopularTvPagnateCallBack(Context context, ActivityPaginateBinding binding, FilmClickListener filmClickListener) {
         return new Callback<FilmResource<TvSerie>>() {
+            private TvPagnateAdapter tvPagnateAdapter;
+            private FilmResource<TvSerie> tvSerieFilmResource;
+            private int page = 1;
+            private boolean isLoading;
+            private boolean isLastPage;
+            private int totalPage = 5;
+            private int currentPage = 1;
+
             @Override
             public void onResponse(Call<FilmResource<TvSerie>> call, Response<FilmResource<TvSerie>> response) {
-                FilmResource<TvSerie> tvSerieFilmResource = response.body();
+                tvSerieFilmResource = response.body();
 
                 LinearLayoutManager layoutManager = new LinearLayoutManager(context, RecyclerView.VERTICAL, false);
                 binding.recycleviewPagnate.setLayoutManager(layoutManager);
@@ -373,10 +413,70 @@ public class ApiService {
                 RecyclerView.ItemDecoration dividerItemDecoration = new DividerItemDecoration(context,DividerItemDecoration.VERTICAL);
                 binding.recycleviewPagnate.addItemDecoration(dividerItemDecoration);
 
-                TvPagnateAdapter tvPagnateAdapter = new TvPagnateAdapter(context,tvSerieFilmResource.getResults());
+                tvPagnateAdapter = new TvPagnateAdapter(context,tvSerieFilmResource.getResults());
                 tvPagnateAdapter.setFilmClickListener(filmClickListener);
                 binding.recycleviewPagnate.setAdapter(tvPagnateAdapter);
+
+
+                if (currentPage < totalPage){
+                    tvPagnateAdapter.addFooterLoading();
+                }
+                else {
+                    isLastPage = true;
+                }
+                binding.recycleviewPagnate.setOnScrollListener(new PaginationScrollListener(layoutManager) {
+                    @Override
+                    public void loadMoreItems() {
+                        isLoading = true;
+
+                        currentPage += 1;
+                        loadNextPage();
+                    }
+                    @Override
+                    public boolean isLoading() {
+                        return isLoading;
+                    }
+                    @Override
+                    public boolean isLastPage() {
+                        return isLastPage;
+                    }
+                });
             }
+            private void loadNextPage() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context,"Load data page " + currentPage,Toast.LENGTH_LONG).show();
+                        Retrofit.retrofit.getPopularTvSeries("en", currentPage)
+                            .enqueue(new Callback<FilmResource<TvSerie>>() {
+                                @Override
+                                public void onResponse(Call<FilmResource<TvSerie>> call, Response<FilmResource<TvSerie>> response) {
+                                    List<TvSerie> list = response.body().getResults();
+
+                                    tvPagnateAdapter.removeFooterLoading();
+
+                                    tvSerieFilmResource.getResults().addAll(list);
+
+                                    tvPagnateAdapter.notifyDataSetChanged();
+
+                                    isLoading = false;
+
+                                    if (currentPage < totalPage){
+                                        tvPagnateAdapter.addFooterLoading();
+                                    }
+                                    else {
+                                        isLastPage = true;
+                                    }
+                                }
+                                @Override
+                                public void onFailure(Call<FilmResource<TvSerie>> call, Throwable t) {
+
+                                }
+                            });
+                    }
+                },4000);
+            }
+
 
             @Override
             public void onFailure(Call<FilmResource<TvSerie>> call, Throwable t) {
