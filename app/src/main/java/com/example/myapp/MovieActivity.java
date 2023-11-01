@@ -124,8 +124,9 @@ public class MovieActivity extends AppCompatActivity {
         } else if (getIntent().getStringExtra("media_type").equals("episode")) {
             Retrofit.retrofit.getTvSeasonsImage(getIntent().getIntExtra("series_id",37854),getIntent().getIntExtra("season_number",1),getIntent().getIntExtra("id",1),"")
                     .enqueue(ApiService.SliderCallBack(binding));
-        }
+        } else if (getIntent().getStringExtra("media_type").equals("person")) {
 
+        }
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {
             @Override

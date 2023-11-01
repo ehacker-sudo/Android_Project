@@ -1,5 +1,7 @@
 package com.example.myapp.api;
 
+import com.example.myapp.auth.AuthActivity;
+import com.example.myapp.model.auth.Auth;
 import com.example.myapp.model.film.Key;
 import com.example.myapp.model.film.Movie;
 import com.example.myapp.model.film.MovieInfo;
@@ -15,8 +17,12 @@ import com.google.gson.GsonBuilder;
 
 import retrofit2.Call;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -213,6 +219,29 @@ public interface Retrofit {
             @Path("season_number") int season_number,
             @Path("episode_number") int episode_number,
             @Query("language") String language
+    );
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/authentication/guest_session/new")
+    Call<Auth> getGuestSession();
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/authentication/token/new")
+    Call<Auth> getRequestToken();
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @POST("user/edit")
+    Call<Auth> getSession(
+            @Body Auth auth
     );
 
 

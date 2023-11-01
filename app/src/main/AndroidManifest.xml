@@ -17,10 +17,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".SeasonActivity"
+            android:name=".filter.GenresActivity"
             android:exported="false" />
         <activity
-            android:name=".Seasonctivity"
+            android:name=".user.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.RegisterActivity"
+            android:exported="false"
+            android:parentActivityName=".auth.AuthActivity" />
+        <activity
+            android:name=".SeasonActivity"
             android:exported="false" />
         <activity
             android:name=".EpisodeActivity"
