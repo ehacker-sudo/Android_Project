@@ -31,9 +31,11 @@ import com.example.myapp.databinding.ActivityMovieBinding;
 import com.example.myapp.databinding.ActivityPaginateBinding;
 import com.example.myapp.film_interface.ExtraInfoListener;
 import com.example.myapp.film_interface.FilmClickListener;
+import com.example.myapp.film_interface.GenresListener;
 import com.example.myapp.film_interface.PaginationScrollListener;
 import com.example.myapp.filter.PaginateActivity;
 import com.example.myapp.model.film.ExtraInfo;
+import com.example.myapp.model.film.Genres;
 import com.example.myapp.model.film.Movie;
 import com.example.myapp.model.film.MovieInfo;
 import com.example.myapp.model.film.TvSerie;
@@ -160,7 +162,7 @@ public class ApiService {
             }
         };
     }
-    public static Callback<TvSerieInfo> TvDetailsCallBack(Context context, ActivityMovieBinding binding, ExtraInfoListener extraInfoListener) {
+    public static Callback<TvSerieInfo> TvDetailsCallBack(Context context, ActivityMovieBinding binding, ExtraInfoListener extraInfoListener,GenresListener genresListener) {
         return new Callback<TvSerieInfo>() {
             @Override
             public void onResponse(Call<TvSerieInfo> call, Response<TvSerieInfo> response) {
@@ -193,6 +195,7 @@ public class ApiService {
                 binding.contentFilm.recycleviewGenres.setLayoutManager(layoutManager);
 
                 GenresAdapter genresAdapter = new GenresAdapter(tvSerieInfo.getGenres());
+                genresAdapter.setGenresListener(genresListener);
                 binding.contentFilm.recycleviewGenres.setAdapter(genresAdapter);
 
 

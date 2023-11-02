@@ -214,7 +214,19 @@ public interface Retrofit {
             "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
     })
     @GET("3/tv/{series_id}/season/{season_number}/episode/{episode_number}")
-    Call<ImageType> getTvSeasonsImage(
+    Call<ImageType> getTvEpisodeImage(
+            @Path("series_id") int series_id,
+            @Path("season_number") int season_number,
+            @Path("episode_number") int episode_number,
+            @Query("language") String language
+    );
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/tv/{series_id}/season/{season_number}/episode/{episode_number}")
+    Call<ImageType> getTvEpisodeDetails(
             @Path("series_id") int series_id,
             @Path("season_number") int season_number,
             @Path("episode_number") int episode_number,

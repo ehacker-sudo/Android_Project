@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.myapp.MovieActivity;
 import com.example.myapp.R;
+import com.example.myapp.SettingsActivity;
 import com.example.myapp.adapter.SearchAdapter;
 import com.example.myapp.api.Retrofit;
 import com.example.myapp.databinding.FragmentSearchBinding;
@@ -54,6 +55,13 @@ public class SearchFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         binding.recycleview.setLayoutManager(layoutManager);
 
+        binding.anvancedSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
         return root;
     }
 
@@ -117,6 +125,10 @@ public class SearchFragment extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                if (newText.equals("")){
+                    SearchAdapter searchAdapter = new SearchAdapter(getContext(),new ArrayList<>());
+                    binding.recycleview.setAdapter(searchAdapter);
+                }
                 return false;
             }
         });

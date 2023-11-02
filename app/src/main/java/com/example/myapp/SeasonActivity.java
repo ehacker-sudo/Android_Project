@@ -60,7 +60,7 @@ public class SeasonActivity extends AppCompatActivity {
                 episodeAdapter.setEpisodeListener(new EpisodeListener() {
                     @Override
                     public void OnClickListener(Episode episode) {
-                        Intent intent = new Intent(getApplicationContext(), MovieActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), EpisodeActivity.class);
                         intent.putExtra("series_id",getIntent().getIntExtra("id",37854));
                         intent.putExtra("season_number",1);
                         intent.putExtra("id",episode.getId());
