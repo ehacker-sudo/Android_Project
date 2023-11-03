@@ -1,27 +1,25 @@
 package com.example.myapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.Toast;
 
-import com.example.myapp.adapter.QuantityAdapter;
-import com.example.myapp.adapter.UserAdapter;
+import com.example.myapp.adapter.ExpandedListViewadapter;
 import com.example.myapp.databinding.ActivitySettingsBinding;
 import com.example.myapp.film_interface.QuantityListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import se.emilsjolander.stickylistheaders.ExpandableStickyListHeadersListView;
-import se.emilsjolander.stickylistheaders.StickyListHeadersListView;
+import java.util.Map;
 
 public class SettingsActivity extends AppCompatActivity {
     private ActivitySettingsBinding binding;
-    private UserAdapter userAdapter;
-    private QuantityAdapter quantityAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,89 +32,98 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
-        userAdapter = new UserAdapter();
-        userAdapter.setStringList(getListUser());
+        Map<GroupObject,List<ItemObject>> listItem = new HashMap<>();
+        GroupObject groupObject2 = new GroupObject(1,"Kiểu phim");
 
-        binding.list.setAdapter(userAdapter);
-        binding.list.setOnHeaderClickListener(new StickyListHeadersListView.OnHeaderClickListener() {
+        List<ItemObject> objectList2 = new ArrayList<>();
+        objectList2.add(new ItemObject(1,"Phim ảnh"));
+        objectList2.add(new ItemObject(2,"Phim truyền hình"));
+
+        listItem.put(groupObject2,objectList2);
+
+        List<GroupObject> listGroup = new ArrayList<>(listItem.keySet());
+
+        ExpandableListAdapter expandableListAdapter = new ExpandedListViewadapter(listGroup, listItem, new QuantityListener() {
             @Override
-            public void onHeaderClick(StickyListHeadersListView l, View header, int itemPosition, long headerId, boolean currentlySticky) {
-                if(binding.list.isHeaderCollapsed(headerId)){
-                    binding.list.expand(headerId);
-                }else {
-                    binding.list.collapse(headerId);
+            public void onQuatityChange(ArrayList<String> arrayList, String string) {
+
+                if (arrayList.size() == 0 || arrayList.size() == 2) {
+                    Map<GroupObject,List<ItemObject>> listItemGenres = new HashMap<>();
+
+                    List<GroupObject> listGroupGenres = new ArrayList<>(listItemGenres.keySet());
+                    ExpandableListAdapter Genres_expandableListAdapter = new ExpandedListViewadapter(listGroupGenres, listItemGenres, new QuantityListener() {
+                        @Override
+                        public void onQuatityChange(ArrayList<String> arrayList, String string) {
+                            binding.advancedSearchBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    Intent intent = new Intent(SettingsActivity.this, AdvanceSearchActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+                    });
+
+                    binding.expandableListView2.setAdapter(Genres_expandableListAdapter);
+                    binding.advancedSearchBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            Intent intent = new Intent(SettingsActivity.this, AdvanceSearchActivity.class);
+                            startActivity(intent);
+                        }
+                    });
                 }
+                else {
+                    Map<GroupObject,List<ItemObject>> listItemGenres = new HashMap<>();
+                    GroupObject groupObject2 = new GroupObject(1,"Thể loại");
+
+                    List<ItemObject> objectListGenres = new ArrayList<>();
+                    objectListGenres.add(new ItemObject(1,"Hành động"));
+                    objectListGenres.add(new ItemObject(2,"Phiêu lưu"));
+                    objectListGenres.add(new ItemObject(3,"Hài"));
+
+                    listItemGenres.put(groupObject2,objectListGenres);
+
+                    List<GroupObject> listGroupGenres = new ArrayList<>(listItemGenres.keySet());
+                    ExpandableListAdapter Genres_expandableListAdapter = new ExpandedListViewadapter(listGroupGenres, listItemGenres, new QuantityListener() {
+                        @Override
+                        public void onQuatityChange(ArrayList<String> arrayList, String string) {
+                            binding.advancedSearchBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                    Intent intent = new Intent(SettingsActivity.this, AdvanceSearchActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+                    });
+
+                    binding.expandableListView2.setAdapter(Genres_expandableListAdapter);
+
+                    binding.advancedSearchBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            Intent intent = new Intent(SettingsActivity.this, AdvanceSearchActivity.class);
+                            if (arrayList.get(0).equals("Phim truyền hình")) {
+                                intent.putExtra("media_type","tv");
+                            } else {
+                                intent.putExtra("media_type","movie");
+                            }
+                            startActivity(intent);
+                        }
+                    });
+                }
+
             }
         });
-        setRecycleView();
+
+        binding.expandableListView.setAdapter(expandableListAdapter);
+
     }
 
-    private List<String> getListUser() {
-        List<String> list = new ArrayList<>();
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-        list.add("A");
-
-        list.add("B");
-        list.add("B");
-        list.add("B");
-        list.add("B");
-        list.add("B");
-
-        list.add("C");
-        list.add("C");
-        list.add("C");
-        list.add("C");
-        list.add("C");
-        list.add("C");
-
-        list.add("D");
-        list.add("D");
-        list.add("D");
-        list.add("D");
-        list.add("D");
-        list.add("D");
-        list.add("D");
-
-        list.add("E");
-        list.add("E");
-        list.add("E");
-        list.add("E");
-        list.add("E");
-        list.add("E");
-
-
-        return list;
-    }
-
-
-    private ArrayList<String> getData() {
-        ArrayList<String> arrayList = new ArrayList<>();
-        arrayList.add("10 kg");
-        arrayList.add("11 kg");
-        arrayList.add("12 kg");
-        arrayList.add("13 kg");
-        arrayList.add("14 kg");
-        arrayList.add("15 kg");
-        arrayList.add("16 kg");
-        arrayList.add("17 kg");
-        arrayList.add("18 kg");
-        return arrayList;
-    }
-
-    private void setRecycleView() {
-        binding.recycleView.setHasFixedSize(true);
-        binding.recycleView.setLayoutManager(new LinearLayoutManager(this));
-
-        quantityAdapter = new QuantityAdapter(this, getData(), new QuantityListener() {
-            @Override
-            public void onQuatityChange(ArrayList<String> arrayList) {
-                Toast.makeText(getApplicationContext(),arrayList.toString(),Toast.LENGTH_LONG).show();
-            }
-        });
-        binding.recycleView.setAdapter(quantityAdapter);
-    }
 
 }
