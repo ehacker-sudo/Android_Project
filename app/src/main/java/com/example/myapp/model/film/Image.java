@@ -5,9 +5,10 @@ public class Image {
     private int height;
     private String iso_639_1;
     private String file_path;
+    private long width;
     private double vote_average;
     private long vote_count;
-    private long width;
+    private String url;
 
     public double getAspect_ratio() {
         return aspect_ratio;
@@ -63,5 +64,13 @@ public class Image {
 
     public void setWidth(long width) {
         this.width = width;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

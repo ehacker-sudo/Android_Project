@@ -24,6 +24,7 @@ import com.example.myapp.adapter.GenresAdapter;
 import com.example.myapp.adapter.TvExtraInfoAdapter;
 import com.example.myapp.adapter.TvPagnateAdapter;
 import com.example.myapp.adapter.TvSerieAdapter;
+import com.example.myapp.adapter.VideoAdapter;
 import com.example.myapp.api.ApiService;
 import com.example.myapp.api.Retrofit;
 import com.example.myapp.databinding.ActivityMovieBinding;
@@ -38,6 +39,7 @@ import com.example.myapp.model.film.Movie;
 import com.example.myapp.model.film.MovieInfo;
 import com.example.myapp.model.film.TvSerie;
 import com.example.myapp.model.film.TvSerieInfo;
+import com.example.myapp.model.film.Video;
 import com.example.myapp.model.resource.CreditsResource;
 import com.example.myapp.model.resource.FilmResource;
 import com.example.myapp.model.resource.ImageType;
@@ -108,6 +110,28 @@ public class MovieActivity extends AppCompatActivity {
                             startActivity(intent);
                         }
                     }));
+
+            Retrofit.retrofit.getVideoTv(getIntent().getIntExtra("id",37854),"en-US").enqueue(new Callback<FilmResource<Video>>() {
+                @Override
+                public void onResponse(Call<FilmResource<Video>> call, Response<FilmResource<Video>> response) {
+                    FilmResource<Video> filmResource = response.body();
+                    if (!filmResource.getResults().isEmpty()) {
+                        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL,false);
+                        binding.contentFilm.recycleviewVideoMovie.setLayoutManager(layoutManager);
+
+                        List<Video> videoList = new ArrayList<>();
+                        videoList.add(filmResource.getResults().get(1));
+                        VideoAdapter videoAdapter = new VideoAdapter(getApplicationContext(),videoList);
+                        binding.contentFilm.recycleviewVideoMovie.setAdapter(videoAdapter);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<FilmResource<Video>> call, Throwable t) {
+
+                }
+            });
+
         } else if (getIntent().getStringExtra("media_type").equals("movie")) {
             Retrofit.retrofit.getMovieDetails(getIntent().getIntExtra("id",37854),"en")
                     .enqueue(ApiService.MovieDetailCallBack(getApplicationContext(),binding));

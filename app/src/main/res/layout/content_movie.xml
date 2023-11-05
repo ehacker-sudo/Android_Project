@@ -246,6 +246,7 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -265,10 +266,10 @@
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp">
                         <TextView
-                            android:id="@+id/tv_firm_image"
+                            android:id="@+id/tv_firm_video"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Tập ảnh"
+                            android:text="Video"
                             android:textSize="20dp"
                             android:textStyle="bold"
                             android:textColor="@color/black"/>
@@ -298,13 +299,74 @@
                         android:orientation="horizontal"
                         android:layout_marginHorizontal="10dp">
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recycleview_image_movie"
+                            android:id="@+id/recycleview_video_movie"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 
                     </LinearLayout>
                 </LinearLayout>
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:layout_marginTop="20dp"
+            android:paddingBottom="10dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp">
+                    <TextView
+                        android:id="@+id/tv_firm_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Tập ảnh"
+                        android:textSize="20dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"/>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Xem tất cả"
+                            android:textSize="9dp"
+                            android:layout_marginEnd="3dp"
+                            android:textColor="#808080"/>
+                        <ImageView
+                            android:layout_marginTop="2dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/arrow_right_outline"/>
+                    </LinearLayout>
+                </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="10dp">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycleview_image_movie"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
