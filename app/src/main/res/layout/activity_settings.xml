@@ -10,7 +10,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="70dp">
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_height="60dp"
@@ -40,21 +41,16 @@
             </RelativeLayout>
         </androidx.appcompat.widget.Toolbar>
 
-        <ExpandableListView
-            android:id="@+id/expandableListView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="#808080"
-            android:dividerHeight="1dp"
-            android:scrollbars="none"/>
+            android:layout_height="wrap_content"/>
 
-        <ExpandableListView
-            android:id="@+id/expandableListView2"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_view_genres"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="#808080"
-            android:dividerHeight="1dp"
-            android:scrollbars="none"/>
+            android:layout_height="wrap_content"/>
     </LinearLayout>
     <Button
         android:id="@+id/advanced_search_btn"

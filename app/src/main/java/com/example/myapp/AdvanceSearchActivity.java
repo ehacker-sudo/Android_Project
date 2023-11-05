@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.myapp.adapter.MovieAdapter;
 import com.example.myapp.adapter.TvSerieAdapter;
@@ -49,9 +50,9 @@ public class AdvanceSearchActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        String with_genres = getIntent().getStringExtra("with_genres");
         if (getIntent().getStringExtra("media_type").equals("tv")) {
-            Retrofit.retrofit.getDiscoverTv("en", 1,false,"popularity.desc").enqueue(new Callback<FilmResource<TvSerie>>() {
+            Retrofit.retrofit.getDiscoverTv("en", 1,false,"popularity.desc",with_genres).enqueue(new Callback<FilmResource<TvSerie>>() {
                 @Override
                 public void onResponse(Call<FilmResource<TvSerie>> call, Response<FilmResource<TvSerie>> response) {
                     FilmResource<TvSerie> tvSerieFilmResource = response.body();
@@ -88,7 +89,7 @@ public class AdvanceSearchActivity extends AppCompatActivity {
                 }
             });
         } else if (getIntent().getStringExtra("media_type").equals("movie")) {
-            Retrofit.retrofit.getDiscoverMovie("en", 1,false,"popularity.desc").enqueue(new Callback<FilmResource<Movie>>() {
+            Retrofit.retrofit.getDiscoverMovie("en", 1,false,"popularity.desc",with_genres).enqueue(new Callback<FilmResource<Movie>>() {
                 @Override
                 public void onResponse(Call<FilmResource<Movie>> call, Response<FilmResource<Movie>> response) {
                     FilmResource<Movie> movieFilmResource = response.body();

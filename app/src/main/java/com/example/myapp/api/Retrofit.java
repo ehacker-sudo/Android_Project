@@ -280,7 +280,8 @@ public interface Retrofit {
             @Query("language") String language,
             @Query("page") int page,
             @Query("include_adult") boolean include_adult,
-            @Query("sort_by") String sort_by
+            @Query("sort_by") String sort_by,
+            @Query("with_genres") String with_genres
     );
 
     @Headers({
@@ -292,6 +293,7 @@ public interface Retrofit {
             @Query("language") String language,
             @Query("page") int page,
             @Query("include_adult") boolean include_adult,
-            @Query("sort_by") String sort_by
+            @Query("sort_by") String sort_by,
+            @Query("with_genres") String with_genres
     );
 }

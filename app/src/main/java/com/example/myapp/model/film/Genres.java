@@ -4,6 +4,11 @@ public class Genres {
     private int id;
     private String name;
 
+    public Genres(String name) {
+        this.id = 0;
+        this.name = name;
+    }
+
     public Genres(int id, String name) {
         this.id = id;
         this.name = name;
