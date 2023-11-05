@@ -207,10 +207,9 @@ public class ApiService {
 
                 List<ExtraInfo> extraInfoList = new ArrayList<>();
                 extraInfoList.add(new ExtraInfo(tvSerieInfo.getId(),"Các tập phim",tvSerieInfo.getNumber_of_episodes() + " tập","Session"));
-                if (tvSerieInfo.isIn_production()){
+                if (tvSerieInfo.isIn_production() && tvSerieInfo.getNext_episode_to_air() != null){
                     extraInfoList.add(new ExtraInfo(tvSerieInfo.getId(),"Tập phim tiếp theo",tvSerieInfo.getNext_episode_to_air().getAir_date(),"Next Ep"));
                 }
-
                 TvExtraInfoAdapter tvExtraInfoAdapter = new TvExtraInfoAdapter(context,extraInfoList);
                 tvExtraInfoAdapter.setExtraInfoListener(extraInfoListener);
 
