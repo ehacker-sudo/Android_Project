@@ -120,7 +120,7 @@ public class MovieActivity extends AppCompatActivity {
                         binding.contentFilm.recycleviewVideoMovie.setLayoutManager(layoutManager);
 
                         List<Video> videoList = new ArrayList<>();
-                        videoList.add(filmResource.getResults().get(1));
+                        videoList.add(filmResource.getResults().get(0 + (int)(Math.random() * ( filmResource.getResults().size() - 1 ))));
                         VideoAdapter videoAdapter = new VideoAdapter(getApplicationContext(),videoList);
                         binding.contentFilm.recycleviewVideoMovie.setAdapter(videoAdapter);
                     }

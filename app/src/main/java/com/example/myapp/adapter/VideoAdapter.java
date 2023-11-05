@@ -1,6 +1,7 @@
 package com.example.myapp.adapter;
 
 import android.content.Context;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +37,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder>{
         public TextView videoRuntime;
         public TextView videoName;
         public ImageView imageView;
+        public CountDownTimer timer;
 
         public ViewHolder(View view) {
             super(view);
@@ -74,10 +76,22 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder>{
         }
 
         viewHolder.videoType.setText(video.getType());
-        new Handler().postDelayed(new Runnable() {
-                      @Override
-                      public void run() {
-                          RapidApi.retrofit.getYoutubeDetail(video.getKey()).enqueue(new Callback<VideoResource>() {
+//        if (viewHolder.timer != null) {
+//            viewHolder.timer.cancel();
+//        }
+//        viewHolder.timer = new CountDownTimer(30000, 1000) {
+//
+//            @Override
+//            public void onTick(long millisUntilFinished) {
+//
+//            }
+//
+//            @Override
+//            public void onFinish() {
+//
+//            }
+//        }.start();
+          RapidApi.retrofit.getYoutubeDetail(video.getKey()).enqueue(new Callback<VideoResource>() {
                                                       @Override
                                                       public void onResponse(Call<VideoResource> call, Response<VideoResource> response) {
                                                           VideoResource videoResource = response.body();
@@ -94,8 +108,5 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder>{
 
                                                       }
                                                   });
-                      }
-
-              },2000);
     }
 }
