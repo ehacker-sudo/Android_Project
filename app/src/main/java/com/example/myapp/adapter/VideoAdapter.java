@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.myapp.R;
 import com.example.myapp.api.RapidApi;
+import com.example.myapp.film_interface.VideoListener;
 import com.example.myapp.model.film.Image;
 import com.example.myapp.model.film.Video;
 import com.example.myapp.model.resource.VideoResource;
@@ -30,6 +31,7 @@ import retrofit2.Response;
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder>{
     private Context context;
     private List<Video> videoList;
+    private VideoListener videoListener;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout itemVideo;
@@ -52,6 +54,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder>{
     public VideoAdapter(Context context, List<Video> videoList) {
         this.context = context;
         this.videoList = videoList;
+    }
+
+    public void setVideoListener(VideoListener videoListener) {
+        this.videoListener = videoListener;
     }
 
     @Override
@@ -78,6 +84,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder>{
         viewHolder.videoType.setText(video.getType());
         viewHolder.videoName.setText(video.getName());
         viewHolder.videoRuntime.setText("");
+        viewHolder.itemVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                videoListener.onClick(video);
+            }
+        });
     }
 
 }

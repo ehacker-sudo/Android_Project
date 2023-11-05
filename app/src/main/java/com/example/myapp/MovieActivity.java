@@ -32,6 +32,7 @@ import com.example.myapp.film_interface.CollectListener;
 import com.example.myapp.film_interface.ExtraInfoListener;
 import com.example.myapp.film_interface.FilmClickListener;
 import com.example.myapp.film_interface.GenresListener;
+import com.example.myapp.film_interface.VideoListener;
 import com.example.myapp.filter.GenresActivity;
 import com.example.myapp.model.film.ExtraInfo;
 import com.example.myapp.model.film.Genres;
@@ -62,6 +63,16 @@ public class MovieActivity extends AppCompatActivity {
 
 //        Toast.makeText(this, "One piece", Toast.LENGTH_LONG).show();
         setSupportActionBar(binding.toolbar);
+
+        binding.contentFilm.allImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MovieActivity.this, AlbumActivity.class);
+                intent.putExtra("id",getIntent().getIntExtra("id",37854));
+                intent.putExtra("media_type",getIntent().getStringExtra("media_type"));
+                startActivity(intent);
+            }
+        });
 
         if (getIntent().getStringExtra("media_type").equals("tv")) {
             Retrofit.retrofit.getTvSerieDetails(getIntent().getIntExtra("id",37854),"en")
@@ -120,6 +131,14 @@ public class MovieActivity extends AppCompatActivity {
                         binding.contentFilm.recycleviewVideoMovie.setLayoutManager(layoutManager);
 
                         VideoAdapter videoAdapter = new VideoAdapter(getApplicationContext(),filmResource.getResults());
+                        videoAdapter.setVideoListener(new VideoListener() {
+                            @Override
+                            public void onClick(Video video) {
+                                Intent intent = new Intent(MovieActivity.this, VideoActivity.class);
+                                intent.putExtra("id",video.getKey());
+                                startActivity(intent);
+                            }
+                        });
                         binding.contentFilm.recycleviewVideoMovie.setAdapter(videoAdapter);
                     }
                 }
