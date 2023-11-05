@@ -119,9 +119,7 @@ public class MovieActivity extends AppCompatActivity {
                         LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.HORIZONTAL,false);
                         binding.contentFilm.recycleviewVideoMovie.setLayoutManager(layoutManager);
 
-                        List<Video> videoList = new ArrayList<>();
-                        videoList.add(filmResource.getResults().get(0 + (int)(Math.random() * ( filmResource.getResults().size() - 1 ))));
-                        VideoAdapter videoAdapter = new VideoAdapter(getApplicationContext(),videoList);
+                        VideoAdapter videoAdapter = new VideoAdapter(getApplicationContext(),filmResource.getResults());
                         binding.contentFilm.recycleviewVideoMovie.setAdapter(videoAdapter);
                     }
                 }

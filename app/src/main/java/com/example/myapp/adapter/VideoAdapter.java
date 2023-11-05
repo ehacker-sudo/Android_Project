@@ -27,10 +27,9 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> implements Callback<VideoResource>{
+public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder>{
     private Context context;
     private List<Video> videoList;
-    private ViewHolder viewHolder;
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public LinearLayout itemVideo;
@@ -62,8 +61,6 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
         return new ViewHolder(view);
     }
 
-
-
     @Override
     public int getItemCount() {
         return videoList.size();
@@ -76,23 +73,11 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.ViewHolder> 
             return;
         }
 
-        this.viewHolder = viewHolder;
-        RapidApi.retrofit.getYoutubeDetail(video.getKey()).enqueue(this);
+        Glide.with(context).load("https://img.youtube.com/vi/" + video.getKey() + "/1.jpg").into(viewHolder.imageView);
+
+        viewHolder.videoType.setText(video.getType());
+        viewHolder.videoName.setText(video.getName());
+        viewHolder.videoRuntime.setText("");
     }
 
-
-    @Override
-    public void onResponse(Call<VideoResource> call, Response<VideoResource> response) {
-        VideoResource videoResource = response.body();
-        Glide.with(context).load(videoResource.getThumbnails().get(videoResource.getThumbnails().size() - 1).getUrl()).into(viewHolder.imageView);
-
-        viewHolder.videoName.setText(videoResource.getTitle());
-        String runtime = "" + (int) Math.floor(videoResource.getLengthSeconds() / 60) + "." + (int) Math.floor(videoResource.getLengthSeconds() % 60);
-        viewHolder.videoRuntime.setText(runtime);
-    }
-
-    @Override
-    public void onFailure(Call<VideoResource> call, Throwable t) {
-
-    }
 }
