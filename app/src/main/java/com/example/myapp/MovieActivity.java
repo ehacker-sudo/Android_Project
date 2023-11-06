@@ -11,29 +11,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.denzcoskun.imageslider.ImageSlider;
-import com.denzcoskun.imageslider.constants.ScaleTypes;
-import com.denzcoskun.imageslider.models.SlideModel;
-import com.example.myapp.adapter.AlbumAdapter;
-import com.example.myapp.adapter.CastAdapter;
-import com.example.myapp.adapter.CrewAdapter;
-import com.example.myapp.adapter.GenresAdapter;
-import com.example.myapp.adapter.TvExtraInfoAdapter;
-import com.example.myapp.adapter.TvPagnateAdapter;
-import com.example.myapp.adapter.TvSerieAdapter;
 import com.example.myapp.adapter.VideoAdapter;
 import com.example.myapp.api.ApiService;
 import com.example.myapp.api.Retrofit;
 import com.example.myapp.databinding.ActivityMovieBinding;
+import com.example.myapp.film_interface.CastListener;
 import com.example.myapp.film_interface.CollectListener;
 import com.example.myapp.film_interface.ExtraInfoListener;
 import com.example.myapp.film_interface.FilmClickListener;
 import com.example.myapp.film_interface.GenresListener;
 import com.example.myapp.film_interface.VideoListener;
 import com.example.myapp.filter.GenresActivity;
+import com.example.myapp.model.credit.Cast;
 import com.example.myapp.model.film.ExtraInfo;
 import com.example.myapp.model.film.Genres;
 import com.example.myapp.model.film.Movie;
@@ -90,8 +80,9 @@ public class MovieActivity extends AppCompatActivity {
                             new GenresListener() {
                                 @Override
                                 public void OnClick(Genres genres) {
-                                    Intent intent = new Intent(MovieActivity.this, GenresActivity.class);
-                                    intent.putExtra("id",genres.getId());
+                                    Intent intent = new Intent(MovieActivity.this, AdvanceSearchActivity.class);
+                                    intent.putExtra("media_type","tv");
+                                    intent.putExtra("with_genres",Integer.toString(genres.getId()));
                                     startActivity(intent);
                                 }
                             }
@@ -101,7 +92,15 @@ public class MovieActivity extends AppCompatActivity {
                     .enqueue(ApiService.SliderCallBack(binding));
 
             Retrofit.retrofit.getTvSerieCredits(getIntent().getIntExtra("id",37854),"en")
-                    .enqueue(ApiService.TvCreditCallBack(getApplicationContext(),binding));
+                    .enqueue(ApiService.TvCreditCallBack(getApplicationContext(), binding
+                            , new CastListener() {
+                                @Override
+                                public void onClick(Cast cast) {
+                                    Intent intent = new Intent(MovieActivity.this, CastActivity.class);
+                                    intent.putExtra("id",Long.toString(cast.getId()));
+                                    startActivity(intent);
+                                }
+                            }));
 
             Retrofit.retrofit.getTVSeriesImages(getIntent().getIntExtra("id",37854),"")
                     .enqueue(ApiService.TvImageCallBack(getApplicationContext(),binding));
@@ -151,13 +150,30 @@ public class MovieActivity extends AppCompatActivity {
 
         } else if (getIntent().getStringExtra("media_type").equals("movie")) {
             Retrofit.retrofit.getMovieDetails(getIntent().getIntExtra("id",37854),"en")
-                    .enqueue(ApiService.MovieDetailCallBack(getApplicationContext(),binding));
+                    .enqueue(ApiService.MovieDetailCallBack(getApplicationContext(), binding,
+                            new GenresListener() {
+                                @Override
+                                public void OnClick(Genres genres) {
+                                    Intent intent = new Intent(MovieActivity.this, AdvanceSearchActivity.class);
+                                    intent.putExtra("media_type","movie");
+                                    intent.putExtra("with_genres",Integer.toString(genres.getId()));
+                                    startActivity(intent);
+                                }
+                            }));
 
             Retrofit.retrofit.getMovieImages(getIntent().getIntExtra("id",37854),"")
                     .enqueue(ApiService.SliderCallBack(binding));
 
             Retrofit.retrofit.getMovieCredits(getIntent().getIntExtra("id",37854),"en")
-                    .enqueue(ApiService.TvCreditCallBack(getApplicationContext(),binding));
+                    .enqueue(ApiService.TvCreditCallBack(getApplicationContext(), binding,
+                            new CastListener() {
+                                @Override
+                                public void onClick(Cast cast) {
+                                    Intent intent = new Intent(MovieActivity.this, CastActivity.class);
+                                    intent.putExtra("id",Long.toString(cast.getId()));
+                                    startActivity(intent);
+                                }
+                            }));
 
             Retrofit.retrofit.getMovieImages(getIntent().getIntExtra("id",37854),"")
                     .enqueue(ApiService.TvImageCallBack(getApplicationContext(),binding));
@@ -177,12 +193,6 @@ public class MovieActivity extends AppCompatActivity {
 
                         }
                     }));
-        } else if (getIntent().getStringExtra("media_type").equals("person")) {
-//            Retrofit.retrofit.getTvSerieDetails(
-//                    getIntent().getIntExtra("series_id",37854),
-//                            getIntent().getIntExtra("season_number",1),
-//                            getIntent().getIntExtra("id",1),"")
-//                    .enqueue();
         }
 
         binding.backBtn.setOnClickListener(new View.OnClickListener() {

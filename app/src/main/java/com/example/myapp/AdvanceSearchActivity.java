@@ -51,6 +51,7 @@ public class AdvanceSearchActivity extends AppCompatActivity {
             }
         });
         String with_genres = getIntent().getStringExtra("with_genres");
+        Toast.makeText(this, with_genres, Toast.LENGTH_LONG).show();
         if (getIntent().getStringExtra("media_type").equals("tv")) {
             Retrofit.retrofit.getDiscoverTv("en", 1,false,"popularity.desc",with_genres).enqueue(new Callback<FilmResource<TvSerie>>() {
                 @Override

@@ -5,6 +5,7 @@ import com.example.myapp.model.auth.Auth;
 import com.example.myapp.model.film.Key;
 import com.example.myapp.model.film.Movie;
 import com.example.myapp.model.film.MovieInfo;
+import com.example.myapp.model.film.People;
 import com.example.myapp.model.film.Search;
 import com.example.myapp.model.film.Season;
 import com.example.myapp.model.film.TvSerie;
@@ -306,5 +307,14 @@ public interface Retrofit {
     Call<FilmResource<Video>> getVideoTv(
             @Path("series_id") int series_id,
             @Query("language") String language
+    );
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("/3/person/{person_id}")
+    Call<People> getPeopleDetail(
+            @Path("person_id") long person_id
     );
 }

@@ -1,4 +1,4 @@
-package com.example.myapp.api;
+    package com.example.myapp.api;
 
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +29,7 @@ import com.example.myapp.adapter.TvPagnateAdapter;
 import com.example.myapp.adapter.TvSerieAdapter;
 import com.example.myapp.databinding.ActivityMovieBinding;
 import com.example.myapp.databinding.ActivityPaginateBinding;
+import com.example.myapp.film_interface.CastListener;
 import com.example.myapp.film_interface.ExtraInfoListener;
 import com.example.myapp.film_interface.FilmClickListener;
 import com.example.myapp.film_interface.GenresListener;
@@ -225,7 +226,7 @@ public class ApiService {
             }
         };
     }
-    public static Callback<MovieInfo> MovieDetailCallBack(Context context, ActivityMovieBinding binding) {
+    public static Callback<MovieInfo> MovieDetailCallBack(Context context, ActivityMovieBinding binding,GenresListener genresListener) {
         return new Callback<MovieInfo>() {
             @Override
             public void onResponse(Call<MovieInfo> call, Response<MovieInfo> response) {
@@ -255,6 +256,7 @@ public class ApiService {
                 binding.contentFilm.recycleviewGenres.setLayoutManager(layoutManager);
 
                 GenresAdapter genresAdapter = new GenresAdapter(movieInfo.getGenres());
+                genresAdapter.setGenresListener(genresListener);
                 binding.contentFilm.recycleviewGenres.setAdapter(genresAdapter);
             }
 
@@ -264,7 +266,7 @@ public class ApiService {
             }
         };
     }
-    public static Callback<CreditsResource> TvCreditCallBack(Context context, ActivityMovieBinding binding) {
+    public static Callback<CreditsResource> TvCreditCallBack(Context context, ActivityMovieBinding binding, CastListener castListener) {
         return new Callback<CreditsResource>() {
             @Override
             public void onResponse(Call<CreditsResource> call, Response<CreditsResource> response) {
@@ -273,6 +275,7 @@ public class ApiService {
                 binding.contentFilm.recycleviewCast.setLayoutManager(layoutManager);
 
                 CastAdapter castAdapter = new CastAdapter(context,creditsResource.getCast());
+                castAdapter.setCastListener(castListener);
                 binding.contentFilm.recycleviewCast.setAdapter(castAdapter);
 
                 LinearLayoutManager layoutManager_crew = new LinearLayoutManager(context, RecyclerView.VERTICAL,false);
