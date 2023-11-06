@@ -14,6 +14,8 @@ import com.example.myapp.model.film.Video;
 import com.example.myapp.model.resource.CreditsResource;
 import com.example.myapp.model.resource.FilmResource;
 import com.example.myapp.model.resource.ImageType;
+import com.example.myapp.model.resource.MovieCreditResource;
+import com.example.myapp.model.resource.TvCreditResource;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -313,8 +315,38 @@ public interface Retrofit {
             "Accept: application/json",
             "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
     })
-    @GET("/3/person/{person_id}")
+    @GET("3/person/{person_id}")
     Call<People> getPeopleDetail(
-            @Path("person_id") long person_id
+            @Path("person_id") int person_id,
+            @Query("language") String language
+    );
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/person/{person_id}/images")
+    Call<ImageType> getPeopleImage(
+            @Path("person_id") int person_id
+    );
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/person/{person_id}/tv_credits")
+    Call<TvCreditResource> getPeopleTvSerieCredits(
+            @Path("person_id") int person_id,
+            @Query("language") String language
+    );
+
+    @Headers({
+            "Accept: application/json",
+            "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI3YmIwZjIwOTE1N2YwYmI0Nzg4ZWNiNTRiZTYzNWQxNCIsInN1YiI6IjY0MmE0OTkzMGYzNjU1MDBmMWMyOWZiNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.inC5WmHQXvHthA0THRYobk29Tea9Q5lpVyY2rfKCBd8"
+    })
+    @GET("3/person/{person_id}/movie_credits")
+    Call<MovieCreditResource> getPeopleMovieCredits(
+            @Path("person_id") int person_id,
+            @Query("language") String language
     );
 }

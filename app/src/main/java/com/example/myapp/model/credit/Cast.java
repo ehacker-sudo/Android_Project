@@ -3,7 +3,7 @@ package com.example.myapp.model.credit;
 public class Cast {
     protected boolean adult;
     protected int gender;
-    protected long id;
+    protected int id;
     protected String known_for_department;
     protected String name;
     protected String original_name;
@@ -29,11 +29,11 @@ public class Cast {
         this.gender = gender;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
