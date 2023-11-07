@@ -99,6 +99,7 @@ public class SettingsActivity extends AppCompatActivity implements SecondCollect
                     public void onClick(View v) {
                         Intent intent = new Intent(SettingsActivity.this, AdvanceSearchActivity.class);
                         intent.putExtra("media_type","tv");
+                        intent.putExtra("with_genres","");
                         startActivity(intent);
                     }
                 });
@@ -172,6 +173,7 @@ public class SettingsActivity extends AppCompatActivity implements SecondCollect
                     public void onClick(View v) {
                         Intent intent = new Intent(SettingsActivity.this, AdvanceSearchActivity.class);
                         intent.putExtra("media_type","movie");
+                        intent.putExtra("with_genres","");
                         startActivity(intent);
                     }
                 });
