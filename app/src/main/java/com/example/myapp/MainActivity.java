@@ -1,6 +1,10 @@
 package com.example.myapp;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -33,6 +37,23 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+        if (isConnected(this)) {
+            Toast.makeText(this, "ok", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "Khong co Internet", Toast.LENGTH_SHORT).show();
+        }
     }
 
+    private boolean isConnected(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifi = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        NetworkInfo mobile = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if ((wifi != null && wifi.isConnected()) || (mobile != null && mobile.isConnected())) {
+            return  true;
+        }
+        else {
+            return false;
+        }
+    }
 }

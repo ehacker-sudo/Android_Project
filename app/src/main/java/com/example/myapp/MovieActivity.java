@@ -170,7 +170,7 @@ public class MovieActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(Cast cast) {
                                     Intent intent = new Intent(MovieActivity.this, CastActivity.class);
-                                    intent.putExtra("id",Long.toString(cast.getId()));
+                                    intent.putExtra("id",cast.getId());
                                     startActivity(intent);
                                 }
                             }));
